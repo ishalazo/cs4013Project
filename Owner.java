@@ -1,5 +1,4 @@
-//Tito Etimiri//
-//missing a a few things but ~progress~
+
 package cs4013Project;
 
 import java.util.ArrayList;
@@ -12,7 +11,15 @@ public class Owner {
 	 private String balancestatement;
 	 private double taxpaid;
 	 private double taxoverdue;
+	
+	/** Owner class 
+	  @author Tito Etimiri 19248547 */
+	 /*
+	  * @param ownerid
+	  * @param property
+	  */
 	 
+	 /* Owner can add properties */
 	public void addProperty(int ownerid, String property) {
 		//add function to add property to the property arraylist
 		 ArrayList<Property> properties = new ArrayList<Property>();
