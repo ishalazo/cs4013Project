@@ -11,3 +11,7 @@ Division of Work:
 * Owner and DepartmentPersonnel Class - Tito
 * GUI - TBC
 * Main for CLI - TBC 
+
+UPDATE
+PropertyHitory has been replaced by a Utility class for dealing with CSV
+NB - This will affect CRC and UML 
