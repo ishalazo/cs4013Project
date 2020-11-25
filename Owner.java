@@ -9,8 +9,6 @@ public class Owner {
 	 private int ownerid;
 	 private String property;
 	 private String balancestatement;
-	 private double taxpaid;
-	 private double taxoverdue;
 	
 	/** Owner class 
 	  @author Tito Etimiri 19248547 */
@@ -18,6 +16,17 @@ public class Owner {
 	  * @param ownerid
 	  * @param property
 	  */
+	
+	private void setOwnerid(int ownerid) {
+		this.ownerid = ownerid;
+
+    }
+	
+	private int getOwnerid() {
+		return this.ownerid;
+	}
+	
+}
 	 
 	 /* Owner can add properties */
 	public void addProperty(int ownerid, String property) {
@@ -35,22 +44,6 @@ public class Owner {
 		
 	}
 	
-	public void setTaxPaid(double taxpaid) {
-		
-	}
-	
-	public double getTaxPaid() {
-		return taxpaid;
-	}
-	
-	public void setOverdue(double taxoverdue) {
-		
-	}
-	
-	public double getOverdue() {
-		return taxoverdue;
-	}
-	
 	public ArrayList<Property> getProperties() {
 		return properties;
 	}
@@ -64,13 +57,4 @@ public class Owner {
 		return balancestatement;
 	}
 	
-	private void setOwnerid(int ownerid) {
-		this.ownerid = ownerid;
-
-    }
 	
-	private int getOwnerid() {
-		return this.ownerid;
-	}
-	
-}
