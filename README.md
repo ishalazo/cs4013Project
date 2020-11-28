@@ -15,3 +15,7 @@ Division of Work:
 UPDATE
 PropertyHitory has been replaced by a Utility class for dealing with CSV
 NB - This will affect CRC and UML 
+
+NOTE 
+CSV file should contain no headings
+It just stores data
