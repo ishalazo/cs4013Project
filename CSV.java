@@ -16,8 +16,7 @@ public class CSV {
             FileWriter writer = new FileWriter(file,true);
             BufferedWriter buffer = new BufferedWriter(writer);
             PrintWriter print = new PrintWriter(buffer);
-            String out = Arrays.toString(content).replace("[", "").replace("]", "");
-            // try find regex for above instead
+            String out = Arrays.toString(content).replaceAll("[\\[\\]]", "");
             print.println(out);
             print.close();
         }
