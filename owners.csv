@@ -1,3 +1,4 @@
+Owner,Address,Eircode,Location Category,Estimated Market Value,Principal Residence
 Clodagh Walsh,101 Balamory Co.Mayo,X91 RY7F,Village,110021,true
-Lakeisha Lazo,Bubble Waffle Factory,20 Liffey Street,Dublin 1,D01 KP97,600000,City,false
-Tito Etimiri,Rose Garden,Childers Retail Park,Childers Road,Limerick,V94 DE09,Small Town,340000,false
+Lakeisha Lazo,"Bubble Waffle Factory,20 Liffey Street,Dublin 1",D01 KP97,City,600000,false
+Tito Etimiri,"Rose Garden,Childers Retail Park,Childers Road,Limerick",V94 DE09,Small Town,340000,false
