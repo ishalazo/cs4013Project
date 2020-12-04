@@ -2,12 +2,14 @@
  * @author Lakeisha Lazo 19277997*/
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Property {
 	private String address, eircode, location,owner;
 	private double marketValue/*, tax*/;
-	private boolean principalRes;
+	private boolean principalResidence;
 	private ArrayList<Payment> propertyPayments;
-	
+	private ArrayList<Payment> overdues; // -ve tax, year and owner 
 	
 	/**Constructs a Property Object
 	 * @param address address of property
@@ -15,38 +17,37 @@ public class Property {
 	 * @param location type of location property is situated in
 	 * @param owner property owner
 	 * @param marketValue estimated market value of property
-	 * @param principalRes true if the property is the principal private property of the owner
+	 * @param principalResidence true if the property is the principal private property of the owner
 	 */
-	public Property(String address, String eircode, String location, String owner, double marketValue, boolean principalRes) {
+	public Property(String owner, String address, String eircode, String location, double marketValue, boolean principalResidence) {
+		this.owner = owner;
 		this.address = address;
 		this.eircode = eircode;
 		this.location = location;
-		this.owner = owner;
 		this.marketValue = marketValue;
-		this.principalRes = principalRes;
-//		tax = 100;
+		this.principalResidence = principalResidence;
 		propertyPayments = new ArrayList<Payment>();
+		String[] info = {owner, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
+		CSV.writeToFile("owners.csv", info);
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+	
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 
 	public String getEircode() {
 		return eircode;
 	}
 
-	public void setEircode(String eircode) {
-		this.eircode = eircode;
-	}
 
 	public String getLocation() {
 		return location;
 	}
 
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
 
 	public double getMarketValue() {
 		return marketValue;
@@ -61,12 +62,12 @@ public class Property {
 		return tax;
 	}
 */
-	public boolean isPrincipalRes() {
-		return principalRes;
+	public boolean isprincipalResidence() {
+		return principalResidence;
 	}
 
-	public void setPrincipalRes(boolean principalRes) {
-		this.principalRes = principalRes;
+	public void setprincipalResidence(boolean principalResidence) {
+		this.principalResidence = principalResidence;
 	}
 
 	public String getAddress() {
@@ -82,12 +83,14 @@ public class Property {
 	}
 
 	public String toString() {
-		return "Property [address=" + address + ", eircode=" + eircode + ", location=" + location + ", owner=" + owner
-				+ ", marketValue=" + marketValue + ", principalRes=" + principalRes + ", propertyPayments="
-				+ propertyPayments + "]";
+		return "Owner: " + owner + "\nAddress:\n" + address + "\n" + eircode 
+				+ "\nLocation: " + location 
+				+ "\nEstimated Market Value: €" + String.format("%.2f", marketValue) 
+				+ "\nPrincipal Private Residence: " + principalResidence ;
 	}
 	
-	
-	//balancing statement??
-	
+	public void overdueCheck() {
+		//check if any year is missing inside propertyPayments, missing year - added to overdues, amount is -ve of compounded tax
+	}
+
 }
