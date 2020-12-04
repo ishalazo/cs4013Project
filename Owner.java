@@ -7,54 +7,74 @@ public class Owner {
 
 	 private ArrayList<Property> properties = new ArrayList<Property>();
 	 private int ownerid;
-	 private String property;
-	 private String balancestatement;
+	 private double taxpaid;
+	 private ArrayList<Property> payments;
 	
-	/** Owner class 
+	 /** Owner class 
 	  @author Tito Etimiri 19248547 */
 	 /*
 	  * @param ownerid
 	  * @param property
 	  */
-	
-	private void setOwnerid(int ownerid) {
-		this.ownerid = ownerid;
-
-    }
-	
-	private int getOwnerid() {
-		return this.ownerid;
-	}
-	
-}
 	 
-	 /* Owner can add properties */
-	public void addProperty(int ownerid, String property) {
-		//add function to add property to the property arraylist
-		 ArrayList<Property> properties = new ArrayList<Property>();
-		 
-		 properties.add("House");
-		 properties.add("Mansion");
-		 properties.add("Townhouse");
-		 properties.add("Bungalo");
+	 public Owner() {
+	        properties = new ArrayList<>();
+	        ArrayList payments = new ArrayList<>();
+	    }
+	 
+	 private void setOwnerid(int ownerid) {
+			this.ownerid = ownerid;
+
+	    }
 		
+		private int getOwnerid() {
+			return this.ownerid;
+		}
+	
+	
+	public void setTaxPaid(double taxpaid) {
+		this.taxpaid = taxpaid;
 	}
 	
-	public static void PayTaxes() {
-		
+	public double getTaxPaid() {
+		return taxpaid;
 	}
+	
+	 /* Owner can add properties */
+	public void addProperty(Property property){
+        properties.add(property);
+    }   
 	
 	public ArrayList<Property> getProperties() {
 		return properties;
 	}
 	
-	//not too sure about this one
-	public void setBalanceStatement() {
-		String balancestatement = taxpaid + taxoverdue;
-		 System.out.println("Balance statement: " + getTaxPaid() + getOverdue());
-	}	
-	public String getBalanceStatement() {
-		return balancestatement;
-	}
-	
-	
+	//fix
+	public double getBalance(int year) {
+        for (int i = payments.size()-1; i >= 0; i--) {
+            if (payments.get(i).getYear() == year ) {
+                return payments.get(i).getAmount();
+            }
+        }
+        return -1;
+    }
+
+    //fix 
+    public double getBalance(Property property) {
+        return property.getAmont();
+    }
+    
+    //fix
+    public double getPaymentAmount(){
+        TaxCalculator tax = new TaxCalculator();
+        double amount = tax.getCharge();
+        return amount;
+    }
+    
+    public void payPropertyTax(double payment){
+        taxpaid = payment;
+        double tax = toPay();
+        
+    }
+    
+}
