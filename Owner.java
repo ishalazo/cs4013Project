@@ -71,7 +71,7 @@ public class Owner {
     
     public void payPropertyTax(double payment){
         taxpaid = payment;
-        double tax = toPay();
+        double tax = getPaymentAmount();
         
     }
     
