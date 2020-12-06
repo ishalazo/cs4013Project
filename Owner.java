@@ -69,8 +69,8 @@ public class Owner {
         return amount;
     }
     
-    public void payPropertyTax(double payment){
-        taxpaid = payment;
+    public void payPropertyTax(Payment payment){
+        this.payment = payment;
         double tax = getPaymentAmount();
         
     }
