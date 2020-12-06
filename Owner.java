@@ -10,6 +10,7 @@ public class Owner {
 	 private String password;
 	 private double taxpaid;
 	 private ArrayList<Property> propertyPayments;
+	 private Payment payment;
 	
 	 /** Owner class 
 	  @author Tito Etimiri 19248547 */
@@ -49,11 +50,10 @@ public class Owner {
 		return properties;
 	}
 	
-	//fix
 	public ArrayList<Payment> getBalance(int year) {
-        for (int i = payments.size()-1; i >= 0; i--) {
-            if (payments.get(i).getYear() == year ) {
-                return payments.get(i).getPropertyPayments();
+        for (int i = propertyPayments.size()-1; i >= 0; i--) {
+            if (propertyPayments.get(i).getYear() == year ) {
+                return propertyPayments.get(i).getPropertyPayments();
             }
         }
         return null;
@@ -65,7 +65,7 @@ public class Owner {
 
     public double getPaymentAmount(){
         TaxCalculator tax = new TaxCalculator();
-        double amount = tax.getCharge();
+        double amount = tax.getCharge(null);
         return amount;
     }
     
