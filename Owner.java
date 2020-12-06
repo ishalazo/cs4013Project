@@ -6,9 +6,10 @@ import java.util.ArrayList;
 public class Owner {
 
 	 private ArrayList<Property> properties = new ArrayList<Property>();
-	 private int ownerid;
+	 private String username;
+	 private String password;
 	 private double taxpaid;
-	 private ArrayList<Property> payments;
+	 private ArrayList<Property> propertyPayments;
 	
 	 /** Owner class 
 	  @author Tito Etimiri 19248547 */
@@ -17,19 +18,18 @@ public class Owner {
 	  * @param property
 	  */
 	 
-	 public Owner() {
+	 public Owner(String username, String password) {
 	        properties = new ArrayList<>();
-	        ArrayList payments = new ArrayList<>();
+	        ArrayList propertyPayments = new ArrayList<>();
 	    }
 	 
-	 private void setOwnerid(int ownerid) {
-			this.ownerid = ownerid;
-
-	    }
-		
-		private int getOwnerid() {
-			return this.ownerid;
-		}
+	 private String getUsername(){
+		 return username;
+	 }
+	
+	private void setPassword(String password){
+		this.password = password;
+	}
 	
 	
 	public void setTaxPaid(double taxpaid) {
@@ -50,21 +50,19 @@ public class Owner {
 	}
 	
 	//fix
-	public double getBalance(int year) {
+	public ArrayList<Payment> getBalance(int year) {
         for (int i = payments.size()-1; i >= 0; i--) {
             if (payments.get(i).getYear() == year ) {
-                return payments.get(i).getAmount();
+                return payments.get(i).getPropertyPayments();
             }
         }
-        return -1;
+        return null;
     }
 
-    //fix 
-    public double getBalance(Property property) {
-        return property.getAmont();
+    public ArrayList<Payment> getBalance(Property property) {
+        return property.getPropertyPayments();
     }
-    
-    //fix
+
     public double getPaymentAmount(){
         TaxCalculator tax = new TaxCalculator();
         double amount = tax.getCharge();
