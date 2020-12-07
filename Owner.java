@@ -8,7 +8,6 @@ public class Owner {
 	 private ArrayList<Property> properties = new ArrayList<Property>();
 	 private String username;
 	 private String password;
-	 private double taxpaid;
 	 private ArrayList<Property> propertyPayments;
 	 private Payment payment;
 	
@@ -30,15 +29,6 @@ public class Owner {
 	
 	private void setPassword(String password){
 		this.password = password;
-	}
-	
-	
-	public void setTaxPaid(double taxpaid) {
-		this.taxpaid = taxpaid;
-	}
-	
-	public double getTaxPaid() {
-		return taxpaid;
 	}
 	
 	 /* Owner can add properties */
