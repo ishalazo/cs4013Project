@@ -39,7 +39,7 @@ public class CSV {
 		return data;
 	}
 	
-	// if could do column heading even better
+	// dont think this is even needed anymore
 	public static ArrayList<String> readFromColumn(String file,int column){
 		ArrayList<String[]> csvFile = readFromFile(file);
 		ArrayList<String> columnData = new ArrayList<String>();
@@ -67,68 +67,61 @@ public class CSV {
 			e.printStackTrace();
 		}
 	}
-	
-	public static ArrayList<String[]> filterByYear(int year){
-			ArrayList<String[]> csv = readFromFile("taxPayments.csv");
-			ArrayList<String[]> rows = new ArrayList<String[]>();
+
+	/** Filter a given CSV file
+	 * @param String file
+	 * @param String columnHeading - The CSV column to be filtered
+	 * @param Object filter - The specific value being searched for in the specified column of the CSV
+	 * */
+	public static ArrayList<String[]> filter(String file,String columnHeading,Object filter){
+		ArrayList<String[]> csv = readFromFile(file);
+		ArrayList<String[]> rows = new ArrayList<String[]>();
+		int index = 0;
+		try {
+			CSVReader reader = new CSVReader(new FileReader(file));
+			String[] headings = reader.readNext();
+			for(int i=0;i<headings.length;i++)
+			{
+				if(headings[i].equals(columnHeading))
+				{
+					index = i;
+					break;
+				}
+			}
+			reader.close();
+			
 			for(int i=0;i<csv.size();i++)
 			{
 				String[] row = csv.get(i);
-	            double yr = Double.parseDouble(row[2]);
-	            if(yr == year)
+	            
+	            if(filter instanceof Integer && Integer.valueOf(row[index]).equals(filter))
 	            {
 	            	rows.add(row);
 	            }
-			}
+	            else if(filter instanceof Boolean && Boolean.valueOf(row[index]).equals(filter))
+				{
+	            	rows.add(row);
+				}
+	            else if(filter instanceof String)
+				{
+					String s = (String)filter;
+					if(Character.isLetter(s.charAt(0)) && row[index].startsWith(s))
+					{
+						rows.add(row);
+					}
+					else if(row[index].equals(s))
+					{
+						rows.add(row);
+					}
+				}
+			}	
 			
-			return rows;
-	}
-	
-	public static ArrayList<String[]> filterBasedOnPaymentStatus(boolean paid){
-		ArrayList<String[]> csv = readFromFile("taxPayments.csv");
-		ArrayList<String[]> rows = new ArrayList<String[]>();
-		for(int i=0;i<csv.size();i++)
-		{
-			String[] row = csv.get(i);
-            boolean paymentStatus = Boolean.parseBoolean(row[4]);
-            if(paymentStatus == paid)
-            {
-            	rows.add(row);
-            }
 		}
-		
-		return rows;
-	}
-
-	public static ArrayList<String[]> filterByUserName(String username){
-		ArrayList<String[]> csv = readFromFile("taxPayments.csv");
-		ArrayList<String[]> rows = new ArrayList<String[]>();
-		for(int i=0;i<csv.size();i++)
+		catch(Exception e)
 		{
-			String[] row = csv.get(i);
-            String login = row[1];
-            if(login.equals(username))
-            {
-            	rows.add(row);
-            }
+			e.printStackTrace();
 		}
-		
 		return rows;
 	}
 	
-	public static ArrayList<String[]> filterByEircode(String routingKey){
-		ArrayList<String[]> csv = readFromFile("taxPayments.csv");
-		ArrayList<String[]> rows = new ArrayList<String[]>();
-		for(int i=0;i<csv.size();i++)
-		{
-			String[] row = csv.get(i);
-            String eircode = row[0];
-            if(eircode.startsWith(routingKey))
-            {
-            	rows.add(row);
-            }
-		}
-		
-		return rows;
-	}
 }
