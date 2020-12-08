@@ -18,7 +18,7 @@ public class CSV {
 	public static ArrayList<String[]> readFromFile(String file) {
 		ArrayList<String[]> data = new ArrayList<String[]>();
 		String[] dataLine;
-		try {
+		try { // buffer for speed up ????
 			
 			CSVReaderBuilder customReader = new CSVReaderBuilder(new FileReader(file));
 			CSVParserBuilder customParser = new CSVParserBuilder();
@@ -66,5 +66,69 @@ public class CSV {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static ArrayList<String[]> filterByYear(int year){
+			ArrayList<String[]> csv = readFromFile("taxPayments.csv");
+			ArrayList<String[]> rows = new ArrayList<String[]>();
+			for(int i=0;i<csv.size();i++)
+			{
+				String[] row = csv.get(i);
+	            double yr = Double.parseDouble(row[2]);
+	            if(yr == year)
+	            {
+	            	rows.add(row);
+	            }
+			}
+			
+			return rows;
+	}
+	
+	public static ArrayList<String[]> filterBasedOnPaymentStatus(boolean paid){
+		ArrayList<String[]> csv = readFromFile("taxPayments.csv");
+		ArrayList<String[]> rows = new ArrayList<String[]>();
+		for(int i=0;i<csv.size();i++)
+		{
+			String[] row = csv.get(i);
+            boolean paymentStatus = Boolean.parseBoolean(row[4]);
+            if(paymentStatus == paid)
+            {
+            	rows.add(row);
+            }
+		}
+		
+		return rows;
+	}
+
+	public static ArrayList<String[]> filterByUserName(String username){
+		ArrayList<String[]> csv = readFromFile("taxPayments.csv");
+		ArrayList<String[]> rows = new ArrayList<String[]>();
+		for(int i=0;i<csv.size();i++)
+		{
+			String[] row = csv.get(i);
+            String login = row[1];
+            if(login.equals(username))
+            {
+            	rows.add(row);
+            }
+		}
+		
+		return rows;
+	}
+	
+	public static ArrayList<String[]> filterByEircode(String routingKey){
+		ArrayList<String[]> csv = readFromFile("taxPayments.csv");
+		ArrayList<String[]> rows = new ArrayList<String[]>();
+		for(int i=0;i<csv.size();i++)
+		{
+			String[] row = csv.get(i);
+            String eircode = row[0];
+            if(eircode.startsWith(routingKey))
+            {
+            	rows.add(row);
+            }
+		}
+		
+		return rows;
 	}
 }
