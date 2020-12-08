@@ -59,8 +59,7 @@ public class TaxCalculator {
 		return flatCharge + (p.getMarketValue()*getRate(p)) + getCharge(p) + ((p.isprincipalResidence() == true) ? 100 : 0);
 	}
 	
-	public static double compoundTax(Property p) {
-		//dont include the current year also start the year after
-//		the year you didnt pay tax, 7% is calculated the next year 
+	public static double compoundTax(Property current, Property prev) {
+		return (TaxCalculator.calculateTax(prev)*(1+penalty)) + TaxCalculator.calculateTax(current);	
 	}
 }
