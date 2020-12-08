@@ -59,6 +59,7 @@ public class TaxCalculator {
 		return flatCharge + (p.getMarketValue()*getRate(p)) + getCharge(p) + ((p.isprincipalResidence() == true) ? 100 : 0);
 	}
 	
+	//ITS WRONG I KNOW
 	public static double compoundTax(Property current, Property prev) {
 		return (TaxCalculator.calculateTax(prev)*(1+penalty)) + TaxCalculator.calculateTax(current);	
 	}
