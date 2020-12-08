@@ -1,15 +1,15 @@
 /** Property Class
  * @author Lakeisha Lazo 19277997*/
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Property {
 	private String address, eircode, location,owner;
-	private double marketValue/*, tax*/;
+	private double marketValue;
 	private boolean principalResidence;
-	private ArrayList<Payment> propertyPayments;
-	private ArrayList<Payment> overdues; // -ve tax, year and owner 
+	private LocalDate dateRegistered; //?????????????
 	
 	/**Constructs a Property Object
 	 * @param address address of property
@@ -19,14 +19,16 @@ public class Property {
 	 * @param marketValue estimated market value of property
 	 * @param principalResidence true if the property is the principal private property of the owner
 	 */
-	public Property(String owner, String address, String eircode, String location, double marketValue, boolean principalResidence) {
+	public Property(String owner, String address, String eircode, String location, 
+			double marketValue, boolean principalResidence, LocalDate dateRegistered) {
 		this.owner = owner;
 		this.address = address;
 		this.eircode = eircode;
 		this.location = location;
 		this.marketValue = marketValue;
 		this.principalResidence = principalResidence;
-		propertyPayments = new ArrayList<Payment>();
+		this.dateRegistered = dateRegistered;
+		calculatePropertyTax();
 		String[] info = {owner, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
 		CSV.writeToFile("owners.csv", info);
 	}
@@ -43,11 +45,9 @@ public class Property {
 		return eircode;
 	}
 
-
 	public String getLocation() {
 		return location;
 	}
-
 
 	public double getMarketValue() {
 		return marketValue;
@@ -57,11 +57,6 @@ public class Property {
 		this.marketValue = marketValue;
 	}
 	
-/*  kinda sus vvvv
-	public double getTax() {
-		return tax;
-	}
-*/
 	public boolean isprincipalResidence() {
 		return principalResidence;
 	}
@@ -73,24 +68,32 @@ public class Property {
 	public String getAddress() {
 		return address;
 	}
-
-	public ArrayList<Payment> getPropertyPayments() {
-		return propertyPayments;
-	}
-
-	public void setPropertyPayments(ArrayList<Payment> propertyPayments) {
-		this.propertyPayments = propertyPayments;
+	
+	public LocalDate getDateRegistered() {
+		return dateRegistered;
 	}
 
 	public String toString() {
-		return "Owner: " + owner + "\nAddress:\n" + address + "\n" + eircode 
+		return "Owner:" + owner + "\nAddress:\n" + address + "\n" + eircode 
 				+ "\nLocation: " + location 
 				+ "\nEstimated Market Value: €" + String.format("%.2f", marketValue) 
-				+ "\nPrincipal Private Residence: " + principalResidence ;
+				+ "\nPrincipal Private Residence: " + principalResidence;
 	}
 	
-	public void overdueCheck() {
-		//check if any year is missing inside propertyPayments, missing year - added to overdues, amount is -ve of compounded tax
+	public void calculatePropertyTax() {
+		//if to see which one to call compound/normal
+		// in compound, update the previous year, merge(????) previous years 
+		//filter by eircode first & then just read & write into code 
+//		if(!taxHistory.get(taxHistory.size()-1).isPaid()) {
+//			TaxRecord compoundTax = new TaxRecord(TaxCalculator.compoundTax(this), LocalDate.now(), false);
+//			taxHistory.add(compoundTax);
+//		} else {
+//			TaxRecord currentTax = new TaxRecord(TaxCalculator.calculateTax(this), LocalDate.now(), false);
+//			taxHistory.add(currentTax);
+//		}
 	}
+	
+//	balancing statement payment calculations
+	
 
 }
