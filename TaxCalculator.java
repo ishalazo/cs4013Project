@@ -1,13 +1,18 @@
 /** TaxCalculator Class
- * @author Lakeisha Lazo 19277997*/
+ * @author Lakeisha Lazo 19277997
+ */
 
 public class TaxCalculator {
-	private static double flatCharge, penalty;
+	private static double fixedCost, flatCharge, penalty;
 	private static double[] propBounds, rateBounds, locCharge; 
 	private static String[] locType;
 	
+	/**
+	 * Sets the default values to calculate tax with.
+	 */
 	public TaxCalculator() {
-		this(100,
+		this(	100,
+				100, 
 				new double[] {0, 150000.0, 400000.0, 650000.0},
 				new double[] {0, 0.01, 0.02, 0.04},
 				new double[] {25, 50, 60, 80, 100},
@@ -16,12 +21,14 @@ public class TaxCalculator {
 	}
 
 	/**
-	 * @param propBounds
+	 * @param propBounds Double array of Estimated Market Value boundary cost 
 	 * @param rateBounds
 	 * @param locCharge
 	 * @param locType
 	 */
-	public TaxCalculator(double flatCharge, double[] propBounds, double[] rateBounds, double[] locCharge, String[] locType, double penalty) {
+	public TaxCalculator(double fixedCost, double flatCharge, double[] propBounds, 
+			double[] rateBounds, double[] locCharge, String[] locType, double penalty) {
+		TaxCalculator.fixedCost = fixedCost;
 		TaxCalculator.flatCharge = flatCharge;
 		TaxCalculator.propBounds = propBounds;
 		TaxCalculator.rateBounds = rateBounds;
@@ -29,7 +36,12 @@ public class TaxCalculator {
 		TaxCalculator.locType = locType;
 		TaxCalculator.penalty = penalty;
 	}
-
+	
+	/*
+	 * This method finds which rate the tax is calculated with.
+	 * This depends on the property's estimated market value.
+	 * Returns the rate the property has depend on the property's market value
+	 */
 	private static double getRate(Property p) {
 		double propVal = p.getMarketValue();
 		double rate = 0;
@@ -43,6 +55,11 @@ public class TaxCalculator {
 		return rate;
 	}
 	
+	/*
+	 * This method finds which location charge is applied to the property. 
+	 * This depends on where the property is located. 
+	 * Returns the charge of a property 
+	 */
 	private static double getCharge(Property p) {
 		String propLoc = p.getLocation();
 		double charge = 0;
@@ -55,12 +72,22 @@ public class TaxCalculator {
 		return charge;
 	}
 	
+	/**
+	 * This method calculates the current year's property tax if the previous year has been paid. It sums the fixed cost of tax, the property's market value multiplied by the rate, the location charge and the charge if it is a principal private residence of the owner. 
+	 * @param p Any property
+	 * @return Returns the tax for that property
+	 */
 	public static double calculateTax(Property p) {
-		return flatCharge + (p.getMarketValue()*getRate(p)) + getCharge(p) + ((p.isprincipalResidence() == true) ? 100 : 0);
+		return fixedCost + p.getMarketValue()*getRate(p) + getCharge(p) + ((p.isprincipalResidence() == true) ? flatCharge : 0);
 	}
 	
-	//ITS WRONG I KNOW
-	public static double compoundTax(Property current, Property prev) {
-		return (TaxCalculator.calculateTax(prev)*(1+penalty)) + TaxCalculator.calculateTax(current);	
+	/**
+	 * This method calculates the current year's property tax if the previous year has <b>not</b> been paid. It sums the previous year's tax with the penalty applied and the current year's tax.
+	 * @param p Any property.
+	 * @param prev The previous year's property tax.
+	 * @return Returns the compounded tax.
+	 */
+	public static double compoundTax(Property current, double prev) {
+		return (prev*(1+penalty)) + TaxCalculator.calculateTax(current);	
 	}
 }
