@@ -16,7 +16,7 @@ public class Owner {
 	  * 
 	  */
 	 
-	 public Owner(String fullname, String username, String password) {
+	 public Owner(String ownername, String username, String password) {
 	        
 	    }
 	 
@@ -28,7 +28,7 @@ public class Owner {
 		this.password = password;
 	}
 	
-	 public String getFullname() {
+	 public String getOwnername() {
 		return ownername;
 	}
 	 
