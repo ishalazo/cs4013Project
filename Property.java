@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 /** Property Class
  * @author Lakeisha Lazo 19277997
  */
@@ -6,6 +9,7 @@ public class Property {
 	private String address, eircode, location,ownerID;
 	private double marketValue;
 	private boolean principalResidence;
+	private ArrayList<TaxRecord> taxes;
 
 	/**Constructs a Property Object
 	 * @param address address of property
@@ -23,6 +27,7 @@ public class Property {
 		this.location = location;
 		this.marketValue = marketValue;
 		this.principalResidence = principalResidence;
+		taxes = new ArrayList<TaxRecord>();
 		calculatePropertyTax();
 		String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
 		CSV.writeToFile("properties.csv", info);
@@ -79,20 +84,21 @@ public class Property {
 	public String toString() {
 		return "ownerID:" + ownerID + "\nAddress:\n" + address + "\n" + eircode 
 				+ "\nLocation: " + location 
-				+ "\nEstimated Market Value: â‚¬" + String.format("%.2f", marketValue) 
+				+ "\nEstimated Market Value: €" + String.format("%.2f", marketValue) 
 				+ "\nPrincipal Private Residence: " + principalResidence;
 	}
 
 	public void calculatePropertyTax() {
 		//if to see which one to call compound/normal
 		//filter by eircode first & then just read & write into code 
-		//		if(!taxHistory.get(taxHistory.size()-1).isPaid()) {
-		//			TaxRecord compoundTax = new TaxRecord(TaxCalculator.compoundTax(this), LocalDate.now(), false);
-		//			taxHistory.add(compoundTax);
-		//		} else {
-		//			TaxRecord currentTax = new TaxRecord(TaxCalculator.calculateTax(this), LocalDate.now(), false);
-		//			taxHistory.add(currentTax);
-		//		}
+		if(!taxes.get(taxes.size()-1).isPaidOnTime()) {
+			double prev = taxes.get((taxes.size()-1)).getAmount();
+			TaxRecord compoundTax = new TaxRecord(TaxCalculator.compoundTax(this,prev), LocalDate.now().getYear(), false);
+			taxes.add(compoundTax);
+		} else {
+			TaxRecord currentTax = new TaxRecord(TaxCalculator.calculateTax(this), LocalDate.now().getYear(), false);
+			taxes.add(currentTax);
+		}
 	}
 
 	//	balancing statement payment calculations

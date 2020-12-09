@@ -78,7 +78,7 @@ public class TaxCalculator {
 	 * @return Returns the tax for that property
 	 */
 	public static double calculateTax(Property p) {
-		return fixedCost + p.getMarketValue()*getRate(p) + getCharge(p) + ((p.isprincipalResidence() == true) ? flatCharge : 0);
+		return fixedCost + p.getMarketValue()*getRate(p) + getCharge(p) + ((!p.isprincipalResidence()) ? flatCharge : 0);
 	}
 	
 	/**
