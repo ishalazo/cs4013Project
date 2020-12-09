@@ -42,6 +42,13 @@ public class Owner {
 		return getProperties();
 	}
 	
-   
-    
+        public void getBalanceStatement(){
+	   
+        }
+	
+	public void payPropertyTax(Property property, double payment){
+		
+	}
+	
+	
 }
