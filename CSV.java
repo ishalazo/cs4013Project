@@ -22,7 +22,7 @@ public class CSV {
 			
 			CSVReaderBuilder customReader = new CSVReaderBuilder(new FileReader(file));
 			CSVParserBuilder customParser = new CSVParserBuilder();
-			customReader.withSkipLines(1);
+			//customReader.withSkipLines(1);
 			customParser.withIgnoreQuotations(false);
 			customReader.withCSVParser(customParser.build());
 			
@@ -57,7 +57,7 @@ public class CSV {
 	 * @param String file 
 	 * @param String[] contents
 	 * */
-	public static void writeToFile(String file,String[] content) {
+	public static void writeToFile(String file,String[] content) {  //change so pass column heading and then make that private method
 		try {
 			CSVWriter writer = new CSVWriter(new FileWriter(file,true));
 			writer.writeNext(content,false);
@@ -73,26 +73,24 @@ public class CSV {
 	 * @param String columnHeading - The CSV column to be filtered
 	 * @param Object filter - The specific value being searched for in the specified column of the CSV
 	 * */
-	public static ArrayList<String[]> filter(String file,String columnHeading,Object filter){
-		ArrayList<String[]> csv = readFromFile(file);
+	public static ArrayList<String[]> filter(ArrayList<String[]> data,String columnHeading,Object filter){
+			
 		ArrayList<String[]> rows = new ArrayList<String[]>();
 		int index = 0;
-		try {
-			CSVReader reader = new CSVReader(new FileReader(file));
-			String[] headings = reader.readNext();
-			for(int i=0;i<headings.length;i++)
+		String[] columnNames = data.get(0);
+		
+		for(int i=0;i<columnNames.length;i++)
+		{
+			if(columnNames[i].equals(columnHeading))
 			{
-				if(headings[i].equals(columnHeading))
-				{
-					index = i;
-					break;
-				}
+				index = i;
+				break;
 			}
-			reader.close();
-			
-			for(int i=0;i<csv.size();i++)
+		}
+							
+		for(int i=0;i<data.size();i++)
 			{
-				String[] row = csv.get(i);
+				String[] row = data.get(i);
 	            
 	            if(filter instanceof Integer && Integer.valueOf(row[index]).equals(filter))
 	            {
@@ -102,26 +100,14 @@ public class CSV {
 				{
 	            	rows.add(row);
 				}
-	            else if(filter instanceof String)
+	            else if(filter instanceof String && (row[index]).contains((CharSequence)filter))
 				{
-					String s = (String)filter;
-					if(Character.isLetter(s.charAt(0)) && row[index].startsWith(s))
-					{
-						rows.add(row);
-					}
-					else if(row[index].equals(s))
-					{
-						rows.add(row);
-					}
+					rows.add(row);
+					
 				}
 			}	
 			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return rows;
+		   return rows;
 	}
-	
+		
 }
