@@ -1,46 +1,53 @@
 /** Property Class
- * @author Lakeisha Lazo 19277997*/
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
+ * @author Lakeisha Lazo 19277997
+ */
 
 public class Property {
-	private String address, eircode, location,owner;
+	private String address, eircode, location,ownerID;
 	private double marketValue;
 	private boolean principalResidence;
-	private LocalDate dateRegistered; //?????????????
-	
+
 	/**Constructs a Property Object
 	 * @param address address of property
 	 * @param eircode routing key of the eircode
 	 * @param location type of location property is situated in
-	 * @param owner property owner
+	 * @param ownerID property ownerID
 	 * @param marketValue estimated market value of property
-	 * @param principalResidence true if the property is the principal private property of the owner
+	 * @param principalResidence true if the property is the principal private property of the ownerID
 	 */
-	public Property(String owner, String address, String eircode, String location, 
-			double marketValue, boolean principalResidence, LocalDate dateRegistered) {
-		this.owner = owner;
+	public Property(String ownerID, String address, String eircode, String location, 
+			double marketValue, boolean principalResidence) {
+		this.ownerID = ownerID;
 		this.address = address;
 		this.eircode = eircode;
 		this.location = location;
 		this.marketValue = marketValue;
 		this.principalResidence = principalResidence;
-		this.dateRegistered = dateRegistered;
 		calculatePropertyTax();
-		String[] info = {owner, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
-		CSV.writeToFile("owners.csv", info);
+		String[] info = {ownerID,/*Owner.getName(ownerID),*/ address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
+		CSV.writeToFile("properties.csv", info);
 	}
 
-	public String getOwner() {
-		return owner;
-	}
-	
-	public void setOwner(String owner) {
-		this.owner = owner;
+	/**
+	 * Gets the name of the ownerID.
+	 * @return Name of the ownerID.
+	 */
+	public String getownerID() {
+		return ownerID;
 	}
 
+	/**
+	 * Changes the ownerID of the property to the new ownerID.	
+	 * @param ownerID Name of the new ownerID
+	 */
+	public void setownerID(String ownerID) {
+		this.ownerID = ownerID;
+	}
+
+	/**
+	 * Gets the eircode of the property.
+	 * @return Returns the 
+	 */
 	public String getEircode() {
 		return eircode;
 	}
@@ -56,7 +63,7 @@ public class Property {
 	public void setMarketValue(double marketValue) {
 		this.marketValue = marketValue;
 	}
-	
+
 	public boolean isprincipalResidence() {
 		return principalResidence;
 	}
@@ -68,32 +75,27 @@ public class Property {
 	public String getAddress() {
 		return address;
 	}
-	
-	public LocalDate getDateRegistered() {
-		return dateRegistered;
-	}
 
 	public String toString() {
-		return "Owner:" + owner + "\nAddress:\n" + address + "\n" + eircode 
+		return "ownerID:" + ownerID + "\nAddress:\n" + address + "\n" + eircode 
 				+ "\nLocation: " + location 
 				+ "\nEstimated Market Value: €" + String.format("%.2f", marketValue) 
 				+ "\nPrincipal Private Residence: " + principalResidence;
 	}
-	
+
 	public void calculatePropertyTax() {
 		//if to see which one to call compound/normal
-		// in compound, update the previous year, merge(????) previous years 
 		//filter by eircode first & then just read & write into code 
-//		if(!taxHistory.get(taxHistory.size()-1).isPaid()) {
-//			TaxRecord compoundTax = new TaxRecord(TaxCalculator.compoundTax(this), LocalDate.now(), false);
-//			taxHistory.add(compoundTax);
-//		} else {
-//			TaxRecord currentTax = new TaxRecord(TaxCalculator.calculateTax(this), LocalDate.now(), false);
-//			taxHistory.add(currentTax);
-//		}
+		//		if(!taxHistory.get(taxHistory.size()-1).isPaid()) {
+		//			TaxRecord compoundTax = new TaxRecord(TaxCalculator.compoundTax(this), LocalDate.now(), false);
+		//			taxHistory.add(compoundTax);
+		//		} else {
+		//			TaxRecord currentTax = new TaxRecord(TaxCalculator.calculateTax(this), LocalDate.now(), false);
+		//			taxHistory.add(currentTax);
+		//		}
 	}
-	
-//	balancing statement payment calculations
-	
+
+	//	balancing statement payment calculations
+
 
 }
