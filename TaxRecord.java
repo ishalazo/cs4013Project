@@ -6,11 +6,10 @@ public class TaxRecord {
 	/** Payment Class for documenting payment made by owners
 	 * @author Lakeisha Lazo 19277997*/
 	
-	// Payment pay = new Payment(1000,LocalDate.of(2020, 10, 17),"clodagh");
 	
 	/** Constructs a Payment object
-	 * @param double amount paidOnTime
-	 * @param LocalDate date payment made
+	 * @param double amount 
+	 * @param int year 
 	 * @param String paidOnTime
 	 * */
 	public TaxRecord(double amount,int year,boolean paidOnTime) {
@@ -45,6 +44,6 @@ public class TaxRecord {
 
 	/** Returns a string representation of a TaxRecord object*/
 	public String toString() {
-		return "Tax for year (" +year+")" + " €" + amount + "\nTax paid on time: " + paidOnTime;
+		return "Tax for year (" +year+")" + " €" + amount + " Tax paid on time: " + paidOnTime;
 	}
 }
