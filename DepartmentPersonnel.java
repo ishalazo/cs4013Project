@@ -56,6 +56,7 @@ public class DepartmentPersonnel {
 	}
 	
 	//This is vvvv wrong but essentially if isPaidOnTime = false, return overdues for that year
+	//this doesnt make sense in code but im on to something
 	public String getYearOverdues(TaxRecord taxes, int year) {
 		for(Property property : property) {
 				if(taxes.isPaidOnTime() == false) 
