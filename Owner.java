@@ -18,8 +18,10 @@ public class Owner {
 	  * 
 	  */
 	 
-	 public Owner(String fullname, String username, String password) {
-	        
+	 public Owner(String ownername, String ownerid, String password) {
+	        this.ownername = ownername;
+	        this.ownerid = ownerid;
+	        this.password = password;
 	    }
 	 
 	 private String getUsername(){
@@ -51,7 +53,7 @@ public class Owner {
     }
 
 	/*pays outstanding property tax*/
-	//major changes srill needed because??????
+	//major changes still needed because????? idk im likely dumb, but how do you pay 
     public void payPropertyTax(Property property, double payment){
     	//ArrayList<TaxRecord> record = this.getTaxRecord?????
     	//for(int i = 0; i < record.size(); i++){
