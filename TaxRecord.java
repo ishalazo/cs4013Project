@@ -1,16 +1,15 @@
+/** TaxRecord Class for documenting tax payments made by owners
+	 * @author Lakeisha Lazo 19277997*/
+	
 public class TaxRecord {
 	private double amount;
 	private int year;
 	private boolean paidOnTime;
 	
-	/** Payment Class for documenting payment made by owners
-	 * @author Lakeisha Lazo 19277997*/
-	
-	
 	/** Constructs a Payment object
-	 * @param double amount 
-	 * @param int year 
-	 * @param String paidOnTime
+	 * @param double amount The tax due for that year.
+	 * @param int year Year that the tax is due.
+	 * @param boolean paidOnTime If the tax is paid on time or not.
 	 * */
 	public TaxRecord(double amount,int year,boolean paidOnTime) {
 		this.amount = amount;
@@ -23,27 +22,34 @@ public class TaxRecord {
 		this.amount = amount;
 	}
 	
-	/** Returns the amount paidOnTime*/
+	/** Gets the amount of tax due.
+	 * @return Amount of tax due.
+	 */
 	public double getAmount() {
 		return amount;
 	}
 	
-	/** Set the name of the paidOnTime*/
+	/** Change the value of paidOnTime.
+	 * @return Nothing.*/
 	public void setpaidOnTime(boolean paidOnTime) {
 		this.paidOnTime = paidOnTime;
 	}
 
-	/** Returns the name of the paidOnTime*/
+	/**True if the tax has been paid on time. False otherwise. 
+	 * @return Paid on time*/
 	public boolean isPaidOnTime() {
 		return paidOnTime;
 	}
 	
+	/**Gets the yaer tax is due.
+	 * @return Year the tax is due
+	 */
 	public int getYear() {
 		return year;
 	}
 
 	/** Returns a string representation of a TaxRecord object*/
 	public String toString() {
-		return "Tax for year (" +year+")" + " €" + amount + " Tax paid on time: " + paidOnTime;
+		return "Tax for year (" +year+")" + " €" + amount + ((paidOnTime)? ", paid":", outstanding");
 	}
 }
