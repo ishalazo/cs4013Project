@@ -9,41 +9,63 @@ import java.util.ArrayList;
 //Eircode is 7 characters long
 //First 3 characters are the routing key to identify the area
 
+package cs4013Project;
+import java.util.ArrayList;
+
 public class DepartmentPersonnel {
-	private ArrayList <Payment> unpaid;
-	private String id;
-	private String ownerpayments;
-	private String propertypayments;
+	
+	private ArrayList<Property> property;
+	private String eircode;
+	private String ownerid;
 	
 	/** DepartmentPersonnel
 	 * @author Tito Etimiri 19248547
 	 */
 	/**
-	 * @param id
-	 * @param owner
+	 * @param ownerdata
+	 * @param propertydata
 	 * 
 	 */
 	
 	public DepartmentPersonnel() {
+
+	}
+	
+	/*return payments made by a particular owner*/
+	public String getOwnerPayments(String ownerid) {
+		property = new ArrayList<Property>();
+		
+		for(int i = 0; i < property.size(); i++) {
+			if(ownerid.equals((property.get(i).getOwner()))){
+				return(property.get(i).toString());
+			}
+		}
+		return "Incorrect id";
+	}
+	
+	/*return payments mad on a particular property*/
+	public String getPropertyPayments(String eircode) {
+		property = new ArrayList<Property>();
+		
+		for(int i = 0; i < property.size(); i++) {
+			if(eircode.equals((property.get(i).getEircode()))) {
+				return(property.get(i).toString());
+			}
+		}
+		return "Incorrect eircode";
+	}
+	
+	//This is vvvv wrong but essentially if isPaidOnTime = false, return overdues for that year
+	public String getYearOverdues(TaxRecord taxes, int year) {
+		for(Property property : property) {
+				if(taxes.isPaidOnTime() == false) 
 		
 	}
 	
-	public void setOwnerPayments(String ownerpayments) {
-		
+	//just return all the tax details for an area depending on the imputed routing key
+	public String getEircodeStats(String eircode) {
+		return " ";
 	}
 	
-	public void setPropertyPayments(String propertypayments) {
-		
-	}
-	
-	public String getOwnerPayments() {
-		return ownerpayments;
-	}
-	
-	public String getPropertyPayments() {
-		return propertypayments;
-	}
-	
-//Get the property statistics for any area (eircode)
-	
+   
 }
