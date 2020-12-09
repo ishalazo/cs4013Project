@@ -24,7 +24,7 @@ public class Property {
 		this.marketValue = marketValue;
 		this.principalResidence = principalResidence;
 		calculatePropertyTax();
-		String[] info = {ownerID,/*Owner.getName(ownerID),*/ address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
+		String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
 		CSV.writeToFile("properties.csv", info);
 	}
 
@@ -79,7 +79,7 @@ public class Property {
 	public String toString() {
 		return "ownerID:" + ownerID + "\nAddress:\n" + address + "\n" + eircode 
 				+ "\nLocation: " + location 
-				+ "\nEstimated Market Value: €" + String.format("%.2f", marketValue) 
+				+ "\nEstimated Market Value: â‚¬" + String.format("%.2f", marketValue) 
 				+ "\nPrincipal Private Residence: " + principalResidence;
 	}
 
