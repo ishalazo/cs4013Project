@@ -88,7 +88,7 @@ public class Utilities {
 		}
 		rows.add(columnNames); // need to have the column headings in the arraylist returned for future filtering 
 		
-		for(int i=0;i<data.size();i++)
+		for(int i=1;i<data.size();i++)
 			{
 				String[] row = data.get(i);
 	            
