@@ -46,9 +46,8 @@ public class Owner {
 		return properties;
 	}
 	
-	/*returns a list of transactions for a particular year*/
-	public void getBalanceStatement(int year){
-		
+	/*returns a list of transactions for a property*/
+	public void getBalanceStatement(){
 		for(int i = 0; i<properties.size(); i++){
 			System.out.println(properties.get(i).getEircode());
 			System.out.println(properties.get(i).getTaxes());
@@ -57,10 +56,11 @@ public class Owner {
     }
 
 	/*pays outstanding property tax*/
-    public void payPropertyTax(Property property, double payment){
+	public void payPropertyTax(Property property, boolean payment){
     	//read and write into binary file using ./ 
+	    if (payment == false)
+    		property.calculatePropertyTax(payment);
     
-	
     }
     
 }
