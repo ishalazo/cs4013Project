@@ -24,7 +24,7 @@ public class Owner {
 	        this.password = password;
 	    }
 	 
-	 private String getUsername(){
+	 private String getOwnerid(){
 		 return ownerid;
 	 }
 	
@@ -43,26 +43,24 @@ public class Owner {
 	
 	/*returns a list of properties*/
 	public ArrayList<Property> getProperties() {
-		return getProperties();
+		return properties;
 	}
 	
 	/*returns a list of transactions for a particular year*/
 	public void getBalanceStatement(int year){
-		//System.out.println((properties).getYear());
+		
+		for(int i = 0; i<properties.size(); i++){
+			System.out.println(properties.get(i).getEircode());
+			System.out.println(properties.get(i).getTaxes());
+        }
 		   
     }
 
 	/*pays outstanding property tax*/
-	//major changes still needed because????? idk im likely dumb, but how do you pay 
     public void payPropertyTax(Property property, double payment){
-    	//ArrayList<TaxRecord> record = this.getTaxRecord?????
-    	//for(int i = 0; i < record.size(); i++){
-    	property.getMarketValue();
-    	
+    	//read and write into binary file using ./ 
+    
 	
     }
-
-	//read and write into binary file. - using .- ????
-   
     
 }
