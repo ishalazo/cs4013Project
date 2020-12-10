@@ -48,9 +48,9 @@ public class Owner {
 	
 	/*returns a list of transactions for a property*/
 	public void getBalanceStatement(){
+		properties = Utilities.readFromFile(ownerid);
 		for(int i = 0; i<properties.size(); i++){
-			System.out.println(properties.get(i).getEircode());
-			System.out.println(properties.get(i).getTaxes());
+			System.out.println(properties.get(i).length);
         }
 		   
     }
