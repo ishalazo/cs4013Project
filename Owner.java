@@ -1,7 +1,6 @@
 
 package cs4013Project;
 
-import java.io.*;
 import java.util.ArrayList;
 
 public class Owner {
