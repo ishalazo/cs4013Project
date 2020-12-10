@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /** TaxCalculator Class
  * @author Lakeisha Lazo 19277997
  */
@@ -10,33 +12,77 @@ public class TaxCalculator {
 	/**
 	 * Sets the default values to calculate tax with.
 	 */
-	public TaxCalculator() {
-		this(	100,
-				100, 
-				new double[] {0, 150000.0, 400000.0, 650000.0},
-				new double[] {0, 0.01, 0.02, 0.04},
-				new double[] {25, 50, 60, 80, 100},
-				new String[] {"Countryside","Village","Small town","Large town","City"},
-				0.07);
+	public static void setCalculator() {
+		setFixedCost(100);
+		setFlatCharge(100);
+		setPenalty(0.07);
+		setPropBounds(new double[] {0, 150000.0, 400000.0, 650000.0});				
+		setRateBounds(new double[] {0, 0.01, 0.02, 0.04});
+		setLocCharge(new double[] {25, 50, 60, 80, 100});
+		setLocType(new String[] {"Countryside","Village","Small town","Large town","City"});
+						
+	}
+	
+	public static String viewCalc(){
+		return String.format("€%.2f fixed cost of tax\n"+ 
+							 "€%.2f when property is not principle private residence\n" +
+							 "(%.0f%% penalty\n" +
+							 "Property value boundaries "+ Arrays.toString(propBounds) + 
+							 "\nTax rates " + Arrays.toString(rateBounds) + 
+							 "\nLocation categories " + Arrays.toString(locType) +
+							 "\nLocation charges " + Arrays.toString(locCharge), 
+							 fixedCost, flatCharge, penalty*100);
+	}
+	
+	/**
+	 * @param fixedCost the fixedCost to set
+	 */
+	public static void setFixedCost(double fixedCost) {
+		TaxCalculator.fixedCost = fixedCost;
 	}
 
 	/**
-	 * @param propBounds Double array of Estimated Market Value boundary cost 
-	 * @param rateBounds
-	 * @param locCharge
-	 * @param locType
+	 * @param flatCharge the flatCharge to set
 	 */
-	public TaxCalculator(double fixedCost, double flatCharge, double[] propBounds, 
-			double[] rateBounds, double[] locCharge, String[] locType, double penalty) {
-		TaxCalculator.fixedCost = fixedCost;
+	public static void setFlatCharge(double flatCharge) {
 		TaxCalculator.flatCharge = flatCharge;
-		TaxCalculator.propBounds = propBounds;
-		TaxCalculator.rateBounds = rateBounds;
-		TaxCalculator.locCharge = locCharge;
-		TaxCalculator.locType = locType;
+	}
+
+	/**
+	 * @param penalty the penalty to set
+	 */
+	public static void setPenalty(double penalty) {
 		TaxCalculator.penalty = penalty;
 	}
-	
+
+	/**
+	 * @param propBounds the propBounds to set
+	 */
+	public static void setPropBounds(double[] propBounds) {
+		TaxCalculator.propBounds = propBounds;
+	}
+
+	/**
+	 * @param rateBounds the rateBounds to set
+	 */
+	public static void setRateBounds(double[] rateBounds) {
+		TaxCalculator.rateBounds = rateBounds;
+	}
+
+	/**
+	 * @param locCharge the locCharge to set
+	 */
+	public static void setLocCharge(double[] locCharge) {
+		TaxCalculator.locCharge = locCharge;
+	}
+
+	/**
+	 * @param locType the locType to set
+	 */
+	public static void setLocType(String[] locType) {
+		TaxCalculator.locType = locType;
+	}
+
 	/*
 	 * This method finds which rate the tax is calculated with.
 	 * This depends on the property's estimated market value.
@@ -44,11 +90,10 @@ public class TaxCalculator {
 	 */
 	private static double getRate(Property p) {
 		double propVal = p.getMarketValue();
-		double rate = 0;
-		rate = rateBounds[rateBounds.length-1];
+		double rate = rateBounds[rateBounds.length-1];
 		for(int i = 0; i < propBounds.length-1; i++) {
 			if (propVal <= propBounds[i+1]) {
-				rate = propBounds[i];
+				rate = rateBounds[i];
 				break;
 			}
 		}
@@ -60,7 +105,7 @@ public class TaxCalculator {
 	 * This depends on where the property is located. 
 	 * Returns the charge of a property 
 	 */
-	private static double getCharge(Property p) {
+	public static double getCharge(Property p) {
 		String propLoc = p.getLocation();
 		double charge = 0;
 		for(int i = 0; i < locType.length; i++) {
@@ -88,6 +133,6 @@ public class TaxCalculator {
 	 * @return Returns the compounded tax.
 	 */
 	public static double compoundTax(Property current, double prev) {
-		return (prev*(1+penalty)) + TaxCalculator.calculateTax(current);	
+		return (prev*(1+penalty)) + calculateTax(current);	
 	}
 }
