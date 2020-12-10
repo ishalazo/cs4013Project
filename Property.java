@@ -1,9 +1,8 @@
-import java.time.LocalDate;
-import java.util.ArrayList;
-
 /** Property Class
  * @author Lakeisha Lazo 19277997
  */
+import java.time.LocalDate;
+import java.util.*;
 
 public class Property {
 	private String address, eircode, location,ownerID;
@@ -28,9 +27,9 @@ public class Property {
 		this.marketValue = marketValue;
 		this.principalResidence = principalResidence;
 		taxes = new ArrayList<TaxRecord>();
-		calculatePropertyTax();
+		calculatePropertyTax(true);
 		String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
-		CSV.writeToFile("properties.csv", info);
+		Utilities.writeToFile("properties.csv", info);
 	}
 
 	/**
@@ -80,6 +79,36 @@ public class Property {
 	public String getAddress() {
 		return address;
 	}
+	
+	public ArrayList<TaxRecord> getTaxes() {
+		return taxes;
+	}
+
+	public void calculatePropertyTax(boolean isPaid) {
+		ArrayList<String[]> payments = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Eircode", eircode);
+//		the code below sucks cause it assumes that there would always be a payment for this property in the
+//		csv but that's not always the case, specially if we're calling this inside the constructor
+//		that's why i have this take in a boolean as an argument so we can set it to true at the construction
+//		boolean isPaid = Boolean.parseBoolean(payments.get(payments.size()-1)[Utilities.indexCol(payments.get(0),"Paid")]);
+		if(!isPaid) {
+			double prev = Double.parseDouble(payments.get(payments.size()-1)[Utilities.indexCol(payments.get(0),"Tax")]);
+			String[] content = {
+					eircode, 
+					ownerID, 
+					Integer.toString(LocalDate.now().getYear()), 
+					Double.toString(TaxCalculator.compoundTax(this,prev)), 
+					Boolean.toString(false)};
+			Utilities.writeToFile("taxPayments.csv", content);
+		} else {
+			String[] c = {
+					eircode, 
+					ownerID, 
+					Integer.toString(LocalDate.now().getYear()), 
+					Double.toString(TaxCalculator.calculateTax(this)), 
+					Boolean.toString(false)};
+			Utilities.writeToFile("taxPayments.csv", c);
+		}
+	}
 
 	public String toString() {
 		return "ownerID:" + ownerID + "\nAddress:\n" + address + "\n" + eircode 
@@ -87,21 +116,4 @@ public class Property {
 				+ "\nEstimated Market Value: €" + String.format("%.2f", marketValue) 
 				+ "\nPrincipal Private Residence: " + principalResidence;
 	}
-
-	public void calculatePropertyTax() {
-		//if to see which one to call compound/normal
-		//filter by eircode first & then just read & write into code 
-		if(!taxes.get(taxes.size()-1).isPaidOnTime()) {
-			double prev = taxes.get((taxes.size()-1)).getAmount();
-			TaxRecord compoundTax = new TaxRecord(TaxCalculator.compoundTax(this,prev), LocalDate.now().getYear(), false);
-			taxes.add(compoundTax);
-		} else {
-			TaxRecord currentTax = new TaxRecord(TaxCalculator.calculateTax(this), LocalDate.now().getYear(), false);
-			taxes.add(currentTax);
-		}
-	}
-
-	//	balancing statement payment calculations
-
-
 }
