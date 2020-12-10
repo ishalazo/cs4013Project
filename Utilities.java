@@ -1,5 +1,6 @@
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -60,7 +61,7 @@ public class Utilities {
 	 * */
 	public static void writeToFile(String file,String[] content) {  //change so pass column heading and then make that private method
 		try {
-			CSVWriter writer = new CSVWriter(new FileWriter(file,true));
+			CSVWriter writer = new CSVWriter(new FileWriter(file));
 			writer.writeNext(content,false);
 			writer.close();
 		}
@@ -77,6 +78,14 @@ public class Utilities {
 			if(Arrays.equals(csvFile.get(i), row)) {
 				csvFile.get(i)[index] = replace.toString();
 			}
+		}
+		
+		try {
+			CSVWriter writer =  new CSVWriter(new FileWriter(file));
+			writer.writeAll(csvFile);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
