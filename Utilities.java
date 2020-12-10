@@ -61,7 +61,7 @@ public class Utilities {
 	 * */
 	public static void writeToFile(String file,String[] content) {  //change so pass column heading and then make that private method
 		try {
-			CSVWriter writer = new CSVWriter(new FileWriter(file));
+			CSVWriter writer = new CSVWriter(new FileWriter(file,true));
 			writer.writeNext(content,false);
 			writer.close();
 		}
