@@ -1,6 +1,8 @@
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -66,6 +68,30 @@ public class Utilities {
 			e.printStackTrace();
 		}
 	}
+	
+	//filter twice
+	public static void writeToCell(String file, Object replace, String[] row, String columnHeading) {
+		ArrayList<String[]> csvFile = readFromFile(file);
+		int index = indexCol(csvFile.get(0),columnHeading);
+		for(int i=0;i<csvFile.size();i++) {
+			if(Arrays.equals(csvFile.get(i), row)) {
+				csvFile.get(i)[index] = replace.toString();
+			}
+		}
+	}
+	
+	private static int indexCol(String[] headings, String columnHeading) {
+		int index = 0;
+		for(int i=0;i<headings.length;i++)
+		{
+			if(headings[i].equals(columnHeading))
+			{
+				index = i;
+				break;
+			}
+		}
+		return index;
+	}
 
 	/** Filter a given CSV file
 	 * @param String file
@@ -75,17 +101,10 @@ public class Utilities {
 	public static ArrayList<String[]> filter(ArrayList<String[]> data,String columnHeading,Object filter){
 			
 		ArrayList<String[]> rows = new ArrayList<String[]>();
-		int index = 0;
-		String[] columnNames = data.get(0);
 		
-		for(int i=0;i<columnNames.length;i++)
-		{
-			if(columnNames[i].equals(columnHeading))
-			{
-				index = i;
-				break;
-			}
-		}
+		String[] columnNames = data.get(0);
+		int index = indexCol(columnNames, columnHeading);
+		
 		rows.add(columnNames); // need to have the column headings in the arraylist returned for future filtering 
 		
 		for(int i=1;i<data.size();i++)
