@@ -96,6 +96,7 @@ public class Utilities {
 		ArrayList<String[]> csvFile = readFromFile(file);
 		return readFromColumn(csvFile,column);
 	}
+	
 	// dont actaully need anymore
 	public static ArrayList<String> readFromColumn(ArrayList<String[]> data,int column){
 		ArrayList<String> columnData = new ArrayList<String>();
