@@ -45,21 +45,19 @@ public class Owner {
 		return properties;
 	}
 	
-	/*returns a list of transactions for a property*/
+	/*returns a list of transactions for a particular year*/
 	public void getBalanceStatement(){
-		properties = Utilities.readFromFile(ownerid);
 		for(int i = 0; i<properties.size(); i++){
-			System.out.println(properties.get(i).length);
-        }
-		   
+            System.out.println(properties.get(i).length);
+            Utilities.readFromFile("taxPayments.csv", properties);
+        }   
     }
 
 	/*pays outstanding property tax*/
-	public void payPropertyTax(Property property, boolean payment){
+    public void payPropertyTax(Property property, boolean payment){
     	//read and write into binary file using ./ 
-	    if (payment == false)
-    		property.calculatePropertyTax(payment);
-    
+    	if (payment == false)
+    	 Utilities.writeToFile("properties.csv", true);
     }
     
 }
