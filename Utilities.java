@@ -1,6 +1,5 @@
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -41,7 +40,29 @@ public class Utilities {
 		}
 		return data;
 	}
+	public static void writeToCell(String file,Object replace,String[] row,String columnHeading) {
+		ArrayList<String[]> csvFile = readFromFile(file);
+		int index = indexCol(csvFile.get(0),columnHeading);
+		for(int i=0;i<csvFile.size();i++) {
+			if(Arrays.equals(csvFile.get(i), row)) {
+				csvFile.get(i)[index] = replace.toString();
+			}
+		}
+	}
 	
+	public static int indexCol(String[] headings,String columnHeading) {
+		int index = 0;
+		for(int i=0;i<headings.length;i++)
+		{
+			if(headings[i].equals(columnHeading))
+			{
+				index = i;
+				break;
+			}
+		}
+		return index;
+	}
+
 	public static ArrayList<String> readFromColumn(String file,int column){
 		ArrayList<String[]> csvFile = readFromFile(file);
 		ArrayList<String> columnData = new ArrayList<String>();
@@ -69,51 +90,27 @@ public class Utilities {
 			e.printStackTrace();
 		}
 	}
-	
-	//filter twice
-	public static void writeToCell(String file, Object replace, String[] row, String columnHeading) {
-		ArrayList<String[]> csvFile = readFromFile(file);
-		int index = indexCol(csvFile.get(0),columnHeading);
-		for(int i=0;i<csvFile.size();i++) {
-			if(Arrays.equals(csvFile.get(i), row)) {
-				csvFile.get(i)[index] = replace.toString();
-			}
-		}
-		
-		try {
-			CSVWriter writer =  new CSVWriter(new FileWriter(file));
-			writer.writeAll(csvFile);
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private static int indexCol(String[] headings, String columnHeading) {
-		int index = 0;
-		for(int i=0;i<headings.length;i++)
-		{
-			if(headings[i].equals(columnHeading))
-			{
-				index = i;
-				break;
-			}
-		}
-		return index;
-	}
 
 	/** Filter a given CSV file
 	 * @param String file
 	 * @param String columnHeading - The CSV column to be filtered
 	 * @param Object filter - The specific value being searched for in the specified column of the CSV
+	 * @apiNote The first String[] in the list will always contain the column headings this is to allows for future filtering
 	 * */
 	public static ArrayList<String[]> filter(ArrayList<String[]> data,String columnHeading,Object filter){
 			
 		ArrayList<String[]> rows = new ArrayList<String[]>();
-		
+		int index = 0;
 		String[] columnNames = data.get(0);
-		int index = indexCol(columnNames, columnHeading);
 		
+		for(int i=0;i<columnNames.length;i++)
+		{
+			if(columnNames[i].equals(columnHeading))
+			{
+				index = i;
+				break;
+			}
+		}
 		rows.add(columnNames); // need to have the column headings in the arraylist returned for future filtering 
 		
 		for(int i=1;i<data.size();i++)
