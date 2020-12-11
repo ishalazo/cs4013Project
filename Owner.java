@@ -46,18 +46,18 @@ public class Owner {
 	}
 	
 	/*returns a list of transactions for a particular year*/
-	public void getBalanceStatement(){
-		for(int i = 0; i<properties.size(); i++){
-            System.out.println(properties.get(i).length);
-            Utilities.readFromFile("taxPayments.csv", properties);
-        }   
+	public void getBalanceStatement(int year){
+		 Utilities.readFromFile("taxPayments.csv");
+		//Utilities.readFromColumn("taxPayments.csv", year);
     }
 
 	/*pays outstanding property tax*/
-    public void payPropertyTax(Property property, boolean payment){
-    	//read and write into binary file using ./ 
-    	if (payment == false)
-    	 Utilities.writeToFile("properties.csv", true);
+   public void payPropertyTax(Property property){
+    	 for (String[] properties : Utilities.filter(properties, "Eircode", property.getEircode())) {
+		         Utilities.readFromColumn("taxPayments.csv", 4)
+			 Utilities.writeToCell("taxPayments.csv", true, null, "Paid");
+	 }
     }
+    
     
 }
