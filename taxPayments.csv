@@ -1,4 +1,4 @@
-Eircode,Owner ID,Year,Tax,Paid
+Eircode,Owner_id,Year,Tax,Paid
 X91 RY7F,1000,2019,250,false
 D01 KP97,1001,2018,12300,false
 D01 KP97,1001,2019,25461,false
