@@ -40,14 +40,43 @@ public class Utilities {
 		}
 		return data;
 	}
+	
+	/** Add data to a specified CSV file
+	 * @param String file 
+	 * @param String[] contents
+	 * */
+	public static void writeToFile(String file,String[] content) {  //change so pass column heading and then make that private method
+		try {
+			CSVWriter writer = new CSVWriter(new FileWriter(file,true));
+			writer.writeNext(content,false);
+			writer.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void writeToCell(String file,Object replace,String[] row,String columnHeading) {
 		ArrayList<String[]> csvFile = readFromFile(file);
 		int index = indexCol(csvFile.get(0),columnHeading);
-		for(int i=0;i<csvFile.size();i++) {
-			if(Arrays.equals(csvFile.get(i), row)) {
+		
+		for(int i=0;i<csvFile.size();i++) 
+		{
+			if(Arrays.equals(csvFile.get(i), row)) 
+			{
 				csvFile.get(i)[index] = replace.toString();
 			}
 		}
+		
+		try {
+			CSVWriter writer = new CSVWriter(new FileWriter(file));
+			writer.writeAll(csvFile);
+			writer.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public static int indexCol(String[] headings,String columnHeading) {
@@ -65,32 +94,22 @@ public class Utilities {
 
 	public static ArrayList<String> readFromColumn(String file,int column){
 		ArrayList<String[]> csvFile = readFromFile(file);
+		return readFromColumn(csvFile,column);
+	}
+	// dont actaully need anymore
+	public static ArrayList<String> readFromColumn(ArrayList<String[]> data,int column){
 		ArrayList<String> columnData = new ArrayList<String>();
 		
-		for(int i=0;i<csvFile.size();i++)
+		for(int i=0;i<data.size();i++)
 		{
-			String[] temp = csvFile.get(i);
+			String[] temp = data.get(i);
 			columnData.add(temp[column]);
 		}
 		
 		return columnData;
 	}
 	
-	/** Add data to a specified CSV file
-	 * @param String file 
-	 * @param String[] contents
-	 * */
-	public static void writeToFile(String file,String[] content) {  //change so pass column heading and then make that private method
-		try {
-			CSVWriter writer = new CSVWriter(new FileWriter(file,true));
-			writer.writeNext(content,false);
-			writer.close();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	/** Filter a given CSV file
 	 * @param String file
 	 * @param String columnHeading - The CSV column to be filtered
