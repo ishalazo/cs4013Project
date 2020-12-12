@@ -68,7 +68,7 @@ public class Owner {
 	/*pays outstanding property tax*/
    public void payPropertyTax(Property property){
     	 for (String[] properties : Utilities.filter(properties, "Eircode", property.getEircode())) {
-		         Utilities.readFromColumn("taxPayments.csv", 1)
+		         Utilities.readFromColumn("taxPayments.csv", 1);
 			 Utilities.writeToCell("taxPayments.csv", true, null, "Paid");
 	 }
     }
