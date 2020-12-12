@@ -17,12 +17,16 @@ public class Owner {
 	  * 
 	  */
 	 
-	 public Owner(String ownerid,String password,String ownername) {
+	public Owner(String ownerid,String password,String ownername,boolean writeToCSV) {
 	        this.ownername = ownername;
+	        this.ownerid = ownerid;
 	        this.password = password;
-		this.ownerid = ownerid;
-		String[] login = {ownerid,password,ownername};
-	        Utilities.writeToFile("systemLogins.csv", login);
+	        
+	        if(writeToCSV)
+	        {
+	        	String[] login = {ownerid,password,ownername};
+		        Utilities.writeToFile("systemLogins.csv", login);
+	        }	        
 	    }
 	 
 	 private String getOwnerid(){
