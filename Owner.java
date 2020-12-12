@@ -17,7 +17,7 @@ public class Owner {
 	  * 
 	  */
 	 
-	 public Owner(String ownername, String ownerid, String password) {
+	 public Owner(String ownerid,String password,String ownername) {
 	        this.ownername = ownername;
 	        this.ownerid = ownerid;
 	        this.password = password;
