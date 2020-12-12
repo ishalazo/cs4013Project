@@ -91,10 +91,12 @@ public class Property {
 
 	public void calculateCurrentTax() {
 		ArrayList<String[]> payments = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Eircode", eircode);
-		boolean isPaid = Boolean.parseBoolean(payments.get(payments.size()-1)[Utilities.indexCol(payments.get(0),"Paid")]);
+		payments.remove(0);
+		boolean isPaid = Boolean.parseBoolean(payments.get(payments.size()-1)[5]);
 		if(!isPaid) {
-			double prev = Double.parseDouble(payments.get(payments.size()-1)[3/*Utilities.indexCol(payments.get(0),"Tax")*/]);
+			double prev = Double.parseDouble(payments.get(payments.size()-1)[3]);
 			String[] content = {
+					address,
 					eircode, 
 					ownerID, 
 					Integer.toString(LocalDate.now().getYear()), 
@@ -103,6 +105,7 @@ public class Property {
 			Utilities.writeToFile("taxPayments.csv", content);
 		} else {
 			String[] c = {
+					address,
 					eircode, 
 					ownerID, 
 					Integer.toString(LocalDate.now().getYear()), 
@@ -131,7 +134,7 @@ public class Property {
 	public String toString() {
 		return "Owner ID:" + ownerID + "\nAddress:" + address + "\nEircode: " + eircode 
 				+ "\nLocation: " + location 
-				+ "\nEstimated Market Value: â‚¬" + String.format("%.2f", marketValue) 
+				+ "\nEstimated Market Value: €" + String.format("%.2f", marketValue) 
 				+ "\nPrincipal Private Residence: " + principalResidence;
 	}
 }
