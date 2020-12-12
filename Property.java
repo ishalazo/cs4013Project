@@ -40,21 +40,6 @@ public class Property {
 		}
 	}
 
-//	private boolean insideCSV(String[] info) {
-//		ArrayList<String[]> CSVprops = Utilities.readFromFile("properties.csv");
-//		boolean inside = false;
-//		for(int i = 1; i < CSVprops.size(); i++) {
-//			String[] row = CSVprops.get(i);
-//			if(ownerID.equals(row[0]) && address.equalsIgnoreCase(row[1]) && eircode.equalsIgnoreCase(row[2]) && location.equalsIgnoreCase(row[3]) 
-//					&& marketValue == Double.parseDouble(row[4]) && principalResidence == Boolean.parseBoolean(row[5])) {
-//				inside = true;
-//				break;
-//			}
-//		}
-//		return inside;
-//	}
-
-
 	/**
 	 * Gets the name of the ownerID.
 	 * @return Name of the ownerID.
@@ -135,9 +120,9 @@ public class Property {
 			if(Boolean.parseBoolean(p[4])) {
 				output += ", paid";
 			} else if (Integer.parseInt(p[2]) == LocalDate.now().getYear() && !Boolean.parseBoolean(p[4])) {
-				output += ", overdue";
-			} else {
 				output += ", outstanding";
+			} else {
+				output += ", overdue";
 			}
 		}
 		return output;
@@ -146,7 +131,7 @@ public class Property {
 	public String toString() {
 		return "Owner ID:" + ownerID + "\nAddress:" + address + "\nEircode: " + eircode 
 				+ "\nLocation: " + location 
-				+ "\nEstimated Market Value: €" + String.format("%.2f", marketValue) 
+				+ "\nEstimated Market Value: â‚¬" + String.format("%.2f", marketValue) 
 				+ "\nPrincipal Private Residence: " + principalResidence;
 	}
 }
