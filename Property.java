@@ -30,7 +30,13 @@ public class Property {
 		if(writeToCSV) { 
 			String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
 			Utilities.writeToFile("properties.csv", info);
-			calculateCurrentTax(true);
+			String[] c = {
+					eircode, 
+					ownerID, 
+					Integer.toString(LocalDate.now().getYear()), 
+					Double.toString(TaxCalculator.calculateTax(this)), 
+					Boolean.toString(false)};
+			Utilities.writeToFile("taxPayments.csv", c);
 		}
 	}
 
@@ -98,12 +104,9 @@ public class Property {
 	}
 
 
-	public void calculateCurrentTax(boolean isPaid) {
+	public void calculateCurrentTax() {
 		ArrayList<String[]> payments = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Eircode", eircode);
-//		the code below sucks cause it assumes that there would always be a payment for this property in the
-//		csv but that's not always the case, specially if we're calling this inside the constructor
-//		that's why i have this take in a boolean as an argument so we can set it to true at the construction
-//		boolean isPaid = Boolean.parseBoolean(payments.get(payments.size()-1)[Utilities.indexCol(payments.get(0),"Paid")]);
+		boolean isPaid = Boolean.parseBoolean(payments.get(payments.size()-1)[Utilities.indexCol(payments.get(0),"Paid")]);
 		if(!isPaid) {
 			double prev = Double.parseDouble(payments.get(payments.size()-1)[3/*Utilities.indexCol(payments.get(0),"Tax")*/]);
 			String[] content = {
@@ -129,9 +132,12 @@ public class Property {
 		String output = "";
 		for(int i = 1; i < propPayments.size(); i++) {
 			String[] p = propPayments.get(i);
-			output += p[2] + " Tax: €" + p[3]+ ((Boolean.parseBoolean(p[4]))? ", paid\n":", overdue\n");
-			if(Integer.parseInt(p[2]) == LocalDate.now().getYear() && !Boolean.parseBoolean(p[4])) {
+			if(Boolean.parseBoolean(p[4])) {
+				output += ", paid";
+			} else if (Integer.parseInt(p[2]) == LocalDate.now().getYear() && !Boolean.parseBoolean(p[4])) {
 				output += ", overdue";
+			} else {
+				output += ", outstanding";
 			}
 		}
 		return output;
@@ -140,7 +146,7 @@ public class Property {
 	public String toString() {
 		return "Owner ID:" + ownerID + "\nAddress:" + address + "\nEircode: " + eircode 
 				+ "\nLocation: " + location 
-				+ "\nEstimated Market Value: €" + String.format("%.2f", marketValue) 
+				+ "\nEstimated Market Value: �" + String.format("%.2f", marketValue) 
 				+ "\nPrincipal Private Residence: " + principalResidence;
 	}
 }
