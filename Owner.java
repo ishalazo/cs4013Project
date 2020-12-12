@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Owner {
 
-	  private String ownerid;
+	 private String ownerid;
 	 private String password;
 	 private String ownername;
 	 private ArrayList<Property> properties = new ArrayList<>();
@@ -19,8 +19,10 @@ public class Owner {
 	 
 	 public Owner(String ownerid,String password,String ownername) {
 	        this.ownername = ownername;
-	        this.ownerid = ownerid;
 	        this.password = password;
+		this.ownerid = ownerid;
+		String[] login = {ownerid,password,ownername};
+	        Utilities.writeToFile("systemLogins.csv", login);
 	    }
 	 
 	 private String getOwnerid(){
