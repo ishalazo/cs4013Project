@@ -168,7 +168,7 @@ public class Utilities {
         } else if(fileName.equals("systemLogins.csv")) {
             for(int i = 1; i < file.size(); i++) {
                 String[] row = file.get(i);
-                Owner o = new Owner(row[0], row[1], row[2]);
+                Owner o = new Owner(row[0], row[1], row[2],false);
                 output.add(o);
             }
         }
