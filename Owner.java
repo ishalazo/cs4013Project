@@ -8,7 +8,7 @@ public class Owner {
 	 private String ownerid;
 	 private String password;
 	 private String ownername;
-	 private ArrayList<Property> properties = new ArrayList<>();
+	 private ArrayList<Object> properties = new ArrayList<>();
 	
 	 /** Owner class 
 	  @author Tito Etimiri 19248547 */
@@ -26,7 +26,11 @@ public class Owner {
 	        {
 	        	String[] login = {ownerid,password,ownername};
 		        Utilities.writeToFile("systemLogins.csv", login);
-	        }	        
+	        }
+	        else
+	        {
+	        	properties = Utilities.fileToArrayList("properties.csv", "Owner_id", ownerid);
+	        }
 	    }
 	 
 	 private String getOwnerid(){
@@ -42,12 +46,16 @@ public class Owner {
 	}
 	 
 	/* Owner can add properties */
-	public void addProperty(Property property) {
-		properties.add(property);
-    }   
+	public void addProperty(Object property) {
+		if(property instanceof Property)
+		{
+			properties.add(property);
+		}
+		
+    	}   
 	
 	/*returns a list of properties*/
-	public ArrayList<Property> getProperties() {
+	public ArrayList<Object> getProperties() {
 		return properties;
 	}
 	
