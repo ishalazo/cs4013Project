@@ -1,7 +1,9 @@
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -80,7 +82,7 @@ public class Utilities {
 		
 	}
 	
-	public static int indexCol(String[] headings,String columnHeading) {
+	private static int indexCol(String[] headings,String columnHeading) {
 		int index = 0;
 		for(int i=0;i<headings.length;i++)
 		{
@@ -177,4 +179,26 @@ public class Utilities {
         }
         return output;
     }
+	
+	public static void taxRecalculation() {
+		TaxCalculator.setCalculator();
+		ArrayList<String> data = Utilities.readFromColumn("taxPayments.csv",3);
+		data.remove(0);
+		int lastTaxYear = Integer.parseInt(Collections.max(data));
+		
+		if(lastTaxYear != LocalDate.now().getYear())
+		{
+			ArrayList<Object> registeredProperties = Utilities.fileToArrayList("properties.csv", "Eircode", "");
+			
+			for(Object obj:registeredProperties)
+			{
+				if(obj instanceof Property)
+				{
+					((Property)obj).calculateCurrentTax();
+				}
+				
+			}
+			
+		}
+	}
 }
