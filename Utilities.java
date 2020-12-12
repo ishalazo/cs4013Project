@@ -155,4 +155,23 @@ public class Utilities {
 		   return rows;
 	}
 	
+	// Written by Lakeisha Lazo 19277997
+	public ArrayList<Object> fileToArrayList(String fileName) {
+        ArrayList<String[]> file = Utilities.readFromFile(fileName);
+        ArrayList<Object> output = new ArrayList<Object>();        
+        if(fileName.equals("properties.csv")) {
+            for(int i = 1; i < file.size(); i++) {
+                String[] row = file.get(i);
+                Property p = new Property(row[0], row[1], row[2], row[3],Double.parseDouble(row[4]), Boolean.parseBoolean(row[5]),false);
+                output.add(p);
+            }
+        } else if(fileName.equals("systemLogins.csv")) {
+            for(int i = 1; i < file.size(); i++) {
+                String[] row = file.get(i);
+                Owner o = new Owner(row[0], row[1], row[2]);
+                output.add(o);
+            }
+        }
+        return output;
+    }
 }
