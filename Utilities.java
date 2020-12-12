@@ -56,6 +56,7 @@ public class Utilities {
 		}
 	}
 	
+	// // Written by Lakeisha Lazo 19277997
 	public static void writeToCell(String file,Object replace,String[] row,String columnHeading) {
 		ArrayList<String[]> csvFile = readFromFile(file);
 		int index = indexCol(csvFile.get(0),columnHeading);
@@ -111,6 +112,7 @@ public class Utilities {
 	}
 	
 	
+	// Jointly written by Lakeisha Lazo and Clodagh Walsh
 	/** Filter a given CSV file
 	 * @param String file
 	 * @param String columnHeading - The CSV column to be filtered
@@ -156,18 +158,19 @@ public class Utilities {
 	}
 	
 	// Written by Lakeisha Lazo 19277997
-	public ArrayList<Object> fileToArrayList(String fileName) {
-        ArrayList<String[]> file = Utilities.readFromFile(fileName);
+	/**Reading from file to make appropriate objects*/
+	public static ArrayList<Object> fileToArrayList(String fileName,String column,String target) {
+        ArrayList<String[]> data = Utilities.filter(Utilities.readFromFile(fileName), column, target);
         ArrayList<Object> output = new ArrayList<Object>();        
         if(fileName.equals("properties.csv")) {
-            for(int i = 1; i < file.size(); i++) {
-                String[] row = file.get(i);
+            for(int i = 1; i < data.size(); i++) {
+                String[] row = data.get(i);
                 Property p = new Property(row[0], row[1], row[2], row[3],Double.parseDouble(row[4]), Boolean.parseBoolean(row[5]),false);
                 output.add(p);
             }
         } else if(fileName.equals("systemLogins.csv")) {
-            for(int i = 1; i < file.size(); i++) {
-                String[] row = file.get(i);
+            for(int i = 1; i < data.size(); i++) {
+                String[] row = data.get(i);
                 Owner o = new Owner(row[0], row[1], row[2],false);
                 output.add(o);
             }
