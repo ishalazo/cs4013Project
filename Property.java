@@ -120,9 +120,9 @@ public class Property {
 		String output = "";
 		for(int i = 1; i < propPayments.size(); i++) {
 			String[] p = propPayments.get(i);
-			if(Boolean.parseBoolean(p[4])) {
+			if(Boolean.parseBoolean(p[5])) {
 				output += ", paid";
-			} else if (Integer.parseInt(p[2]) == LocalDate.now().getYear() && !Boolean.parseBoolean(p[4])) {
+			} else if (Integer.parseInt(p[3]) == LocalDate.now().getYear() && !Boolean.parseBoolean(p[5])) {
 				output += ", outstanding";
 			} else {
 				output += ", overdue";
@@ -134,7 +134,7 @@ public class Property {
 	public String toString() {
 		return "Owner ID:" + ownerID + "\nAddress:" + address + "\nEircode: " + eircode 
 				+ "\nLocation: " + location 
-				+ "\nEstimated Market Value: €" + String.format("%.2f", marketValue) 
+				+ "\nEstimated Market Value: â‚¬" + String.format("%.2f", marketValue) 
 				+ "\nPrincipal Private Residence: " + principalResidence;
 	}
 }
