@@ -30,15 +30,7 @@ public class Property {
 		if(writeToCSV) { 
 			String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
 			Utilities.writeToFile("properties.csv", info);
-			
-			//generate the current years tax cause it's registered in 2020
-			String[] c = {
-				eircode, 
-				ownerID, 
-				Integer.toString(LocalDate.now().getYear()), 
-				Double.toString(TaxCalculator.calculateTax(this)), 
-				Boolean.toString(false)};
-			Utilities.writeToFile("taxPayments.csv", c);
+			calculateCurrentTax(true);
 		}
 	}
 
@@ -137,7 +129,7 @@ public class Property {
 		String output = "";
 		for(int i = 1; i < propPayments.size(); i++) {
 			String[] p = propPayments.get(i);
-			output += p[2] + " Tax: €" + p[3]+ ((Boolean.parseBoolean(p[4]))? ", paid\n":", overdue\n");
+			output += p[2] + " Tax: â‚¬" + p[3]+ ((Boolean.parseBoolean(p[4]))? ", paid\n":", overdue\n");
 			if(Integer.parseInt(p[2]) == LocalDate.now().getYear() && !Boolean.parseBoolean(p[4])) {
 				output += ", overdue";
 			}
@@ -148,7 +140,7 @@ public class Property {
 	public String toString() {
 		return "Owner ID:" + ownerID + "\nAddress:" + address + "\nEircode: " + eircode 
 				+ "\nLocation: " + location 
-				+ "\nEstimated Market Value: €" + String.format("%.2f", marketValue) 
+				+ "\nEstimated Market Value: â‚¬" + String.format("%.2f", marketValue) 
 				+ "\nPrincipal Private Residence: " + principalResidence;
 	}
 }
