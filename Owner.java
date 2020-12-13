@@ -52,15 +52,17 @@ public class Owner {
 		return properties;
 	}
 
-	/*returns a list of transactions for a particular year*/
-	public void getBalanceStatement(int firstYr, int secondYr){
+	/*returns a list of transactions for a particular year*/ // PLEASE DO NOT CHANGE THIS
+	public ArrayList<String> getBalanceStatement(int firstYr, int secondYr){
+		ArrayList<String> statements = new ArrayList<String>();
 		for(int i=0;i<properties.size();i++)
 		{
 			if(properties.get(i) instanceof Property)
 			{
-				System.out.println(((Property)properties.get(i)).propBalStatement(firstYr, secondYr));
+				statements.add(((Property)properties.get(i)).propBalStatement(firstYr,secondYr));
 			}
 		}
+		return statements;
 	}
 
 	/*pays outstanding property tax*/
