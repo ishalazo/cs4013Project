@@ -61,9 +61,6 @@ public class Owner {
 				System.out.println(((Property)properties.get(i)).propBalStatement(firstYr, secondYr));
 			}
 		}
-		
-		//Utilities.readFromFile("taxPayments.csv");
-		//Utilities.readFromColumn("taxPayments.csv", year);
 	}
 
 	/*pays outstanding property tax*/
