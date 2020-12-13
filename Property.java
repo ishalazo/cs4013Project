@@ -27,12 +27,13 @@ public class Property {
 		this.marketValue = marketValue;
 		this.principalResidence = principalResidence;
 		valsCSV = new String[] {
+				ownerID, 
 				address,
 				eircode, 
-				ownerID, 
-				Integer.toString(LocalDate.now().getYear()), 
-				Double.toString(TaxCalculator.calculateTax(this)), 
-				Boolean.toString(false)};
+				location,
+				Double.toString(marketValue),
+				Boolean.toString(principalResidence)
+		};
 		
 		if(writeToCSV) { 
 			String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
