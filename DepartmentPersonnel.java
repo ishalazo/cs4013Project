@@ -12,12 +12,13 @@ public class DepartmentPersonnel {
 	
 	public DepartmentPersonnel() {
 	}
-		
+	
+        /** returns a list of properties of a particular owner*/	
 	private ArrayList<String[]> getOwnerProperties(String ownerid) { 
         return Utilities.filter(Utilities.readFromFile("properties.csv"), "Owner_id",ownerid);
     }
 	
-	/*return payments made by a particular owner*/
+	/**return payments made by a particular owner*/
 	public String getOwnerPayments(String ownerid) {
 		property = new ArrayList<Property>();
 		Utilities.filter(properties, "Ownerid", ownerid);
@@ -31,7 +32,7 @@ public class DepartmentPersonnel {
 		return "Incorrect id";
 	}
 	
-	/*return payments made on a particular property*/
+	/**return payments made on a particular property*/
 	public String getPropertyPayments(String eircode) {
 		property = new ArrayList<Property>();
 		Utilities.filter(properties, "Eircode", eircode);
@@ -45,18 +46,18 @@ public class DepartmentPersonnel {
 		return "Incorrect eircode";
 	}
 	
-	/*return all unpaid tax payments for a particular owner, on a particular year*/
+	/**return all unpaid tax payments for a particular owner, on a particular year*/
 	private ArrayList<String> getOverdues(String ownerid, String eircode){
         ArrayList<String[]> properties = Utilities.filter(Utilities.filter(Utilities.readFromFile("taxPayments.csv"),"Year",ownerid), "Eircode", eircode);
         properties = Utilities.filter(properties, "Year", LocalDate.now().getYear());
         ArrayList<String[]> unpaid = Utilities.filter(properties,"Paid",false);
         return Utilities.readFromColumn(unpaid,0);
     }
-	
+	/** method to identify the first three figures of an eircode as the routing key*/
 	public String getRoutingKey(String eircode){        
         return eircode.substring(0, 2);
     }
-	
+	/** calculates the sum of all the rows so the sum can be used later for the average*/
 	private double sumRows(ArrayList<String[]> properties, int tax) {
 		double sum = 0;
 		for (int i = 1; i < properties.size(); i++) {
@@ -65,10 +66,8 @@ public class DepartmentPersonnel {
 		return sum;
 	}
 	
-	/*returns tax statistics of properties in a particular area*/
+	/**returns tax statistics of properties in a particular area according to eircode*/
 	public String getPropertStats(String eircode, String ownerid) {
-	   
-		
 		
 		if(eircode.length() > 3) {
 			eircode = getRoutingKey(eircode);
