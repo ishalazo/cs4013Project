@@ -71,7 +71,7 @@ public class DepartmentPersonnel {
 		
 		
 		if(eircode.length() > 3) {
-			System.out.println("Incorrect input, routing key too long");
+			eircode = getRoutingKey(eircode);
 		}
 		ArrayList<String[]> properties = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Eircode",
 				eircode);
