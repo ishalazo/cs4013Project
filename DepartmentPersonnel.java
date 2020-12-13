@@ -9,7 +9,7 @@ public class DepartmentPersonnel {
 	private String eircode;
 	private String ownerid;
 	private ArrayList<String[]> properties;
-	private int id;
+	
 	
 	/** DepartmentPersonnel
 	 * @author Tito Etimiri 19248547
@@ -20,10 +20,7 @@ public class DepartmentPersonnel {
 	 * 
 	 */
 	
-	public DepartmentPersonnel(int id) {
-		//departmentPersonnel have the same four digit id
-		this.id = id;
-
+	public DepartmentPersonnel() {
 	}
 	
 	//some of the methods are a lil redundant now but i don't want to delete anything yet
@@ -70,7 +67,7 @@ public class DepartmentPersonnel {
         return Utilities.readFromColumn(unpaid,0);
     }
 	
-	public String getRoutingKey(String eircode){        
+	private String getRoutingKey(String eircode){        
         return eircode.substring(0, 2);
     }
 	
