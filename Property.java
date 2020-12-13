@@ -8,7 +8,7 @@ public class Property {
 	private String address, eircode, location,ownerID;
 	private double marketValue, tax;
 	private boolean principalResidence;
-	private String[] valsCSV;
+//	private String[] propVals;
 
 	/**Constructs a Property Object
 	 * @param address address of property
@@ -26,24 +26,29 @@ public class Property {
 		this.location = location;
 		this.marketValue = marketValue;
 		this.principalResidence = principalResidence;
-		valsCSV = new String[] {
+		/*propVals = new String[] {
 				ownerID, 
 				address,
 				eircode, 
 				location,
 				Double.toString(marketValue),
 				Boolean.toString(principalResidence)
-		};
+		};*/
+		
+		ArrayList<String[]> payments = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Eircode", eircode);
+		payments.remove(0);
+		tax = Double.parseDouble(payments.get(payments.size()-1)[4]);
 		
 		if(writeToCSV) { 
 			String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
 			Utilities.writeToFile("properties.csv", info);
+			tax = TaxCalculator.calculateTax(this);
 			String[] c = {
 					address,
 					eircode, 
 					ownerID, 
 					Integer.toString(LocalDate.now().getYear()), 
-					Double.toString(TaxCalculator.calculateTax(this)), 
+					Double.toString(tax), 
 					Boolean.toString(false)};
 			Utilities.writeToFile("taxPayments.csv", c);
 		}
@@ -55,14 +60,6 @@ public class Property {
 	 */
 	public String getOwnerID() {
 		return ownerID;
-	}
-
-	/**
-	 * Changes the ownerID of the property to the new ownerID.	
-	 * @param ownerID Name of the new ownerID
-	 */
-	public void setownerID(String ownerID) {
-		this.ownerID = ownerID;
 	}
 
 	/**
@@ -82,9 +79,10 @@ public class Property {
 	}
 
 	public void setMarketValue(double marketValue) {
+		String[] info = {ownerID, address, eircode, location, Double.toString(this.marketValue), Boolean.toString(principalResidence)};
+		Utilities.writeToCell("properties.csv", marketValue, info, "Estimated Market Value");
 		this.marketValue = marketValue;
-		Utilities.writeToCell("properties.csv", marketValue, valsCSV, "Estimated Market Value");
-		valsCSV[4] = Double.toString(marketValue);
+//		propVals[4] = Double.toString(marketValue);
 	}
 
 	public boolean isprincipalResidence() {
@@ -92,16 +90,16 @@ public class Property {
 	}
 
 	public void setprincipalResidence(boolean principalResidence) {
+		String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
+		Utilities.writeToCell("properties.csv", principalResidence, info, "Principal Residence");
 		this.principalResidence = principalResidence;
-		Utilities.writeToCell("properties.csv", principalResidence, valsCSV, "Principal Residence");
-		valsCSV[5] = Boolean.toString(principalResidence);
+//		propVals[5] = Boolean.toString(principalResidence);
 	}
 
 	public String getAddress() {
 		return address;
 	}
 	
-
 	/**
 	 * @return the tax
 	 */
@@ -114,7 +112,7 @@ public class Property {
 		payments.remove(0);
 		boolean isPaid = Boolean.parseBoolean(payments.get(payments.size()-1)[5]);
 		if(!isPaid) {
-			double prev = Double.parseDouble(payments.get(payments.size()-1)[3]);
+			double prev = Double.parseDouble(payments.get(payments.size()-1)[4]);
 			tax = TaxCalculator.compoundTax(this,prev);
 			String[] content = {
 					address,
@@ -138,26 +136,41 @@ public class Property {
 	}
 	
 	public String propBalStatement() {
+		ArrayList<String> data = Utilities.readFromColumn("taxPayments.csv",3);
+		data.remove(0);
+		int currTaxYr = Integer.parseInt(Collections.max(data));
+		int initialTaxYr = Integer.parseInt(Collections.min(data));
+		return propBalStatement(initialTaxYr,currTaxYr);
+	}
+	
+	public String propBalStatement(int firstYr, int secondYr) {
+		if(firstYr>secondYr) {
+			int temp = firstYr;
+			firstYr = secondYr;
+			secondYr = temp;
+		}
 		ArrayList<String[]> propPayments = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Eircode", eircode);
-		String output = "";
+		String output = eircode + "\n";
 		for(int i = 1; i < propPayments.size(); i++) {
 			String[] p = propPayments.get(i);
-			output += p[3] + " Tax: €" + p[4];
-			if(Boolean.parseBoolean(p[5])) {
-				output += ", Paid\n";
-			} else if (Integer.parseInt(p[3]) == LocalDate.now().getYear() && !Boolean.parseBoolean(p[5])) {
-				output += ", Outstanding\n";
-			} else {
-				output += ", Overdue\n";
+			int propYr = Integer.parseInt(p[3]);
+			if(firstYr <= propYr && propYr <= secondYr) {
+				output += String.format("%s Tax: €%.2f",p[3], p[4]);
+				if(Boolean.parseBoolean(p[5])) {
+					output += ", Paid\n";
+				} else if (Integer.parseInt(p[3]) == LocalDate.now().getYear() && !Boolean.parseBoolean(p[5])) {
+					output += ", Outstanding\n";
+				} else {
+					output += ", Overdue\n";
+				}
 			}
 		}
 		return output;
 	}
 
 	public String toString() {
-		return "Owner ID:" + ownerID + "\nAddress:" + address + "\nEircode: " + eircode 
-				+ "\nLocation: " + location 
-				+ "\nEstimated Market Value: €" + String.format("%.2f", marketValue) 
-				+ "\nPrincipal Private Residence: " + principalResidence;
+		return String.format("Owner ID: %s\nAddress: %s \nEircode: %s\nLocation:  %s\n"
+				+ "Estimated Market Value: €%.2f\nPrincipal Private Residence: %b\nTax due: €%.2f\n",
+				ownerID, address, eircode, location, marketValue, principalResidence,tax);
 	}
 }
