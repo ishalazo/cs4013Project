@@ -23,16 +23,14 @@ public class TaxCalculator {
 						
 	}
 	
-	
-	
 	/**
-	 * @param fixedCost
-	 * @param flatCharge
-	 * @param penalty
-	 * @param propBounds
-	 * @param rateBounds
-	 * @param locCharge
-	 * @param locType
+	 * @param fixedCost how much the tax is initially without annything added
+	 * @param flatCharge added when location is not the principal private residence
+	 * @param penalty percentage penalty for overdue tax
+	 * @param propBounds the boundaries between for propery values
+	 * @param rateBounds the rates for the property values
+	 * @param locCharge how much to add depending on the location category
+	 * @param locType where the property is situated
 	 */
 	public static void setCalculator(double fixedCost, double flatCharge, double penalty, double[] propBounds, double[] rateBounds,
 			double[] locCharge, String[] locType) {
@@ -44,9 +42,11 @@ public class TaxCalculator {
 		TaxCalculator.setPropBounds(propBounds);
 		TaxCalculator.setRateBounds(rateBounds);
 	}
-
-
-
+	
+	/**
+	 * view all calculator values
+	 * @return a string of all the calculator's values 
+	 */
 	public static String viewCalc(){
 		return String.format("€%.2f fixed cost of tax\n"+ 
 							 "€%.2f when property is not principle private residence\n" +
@@ -107,12 +107,10 @@ public class TaxCalculator {
 		TaxCalculator.locType = locType;
 	}
 	
-	
-
-	/*
-	 * This method finds which rate the tax is calculated with.
-	 * This depends on the property's estimated market value.
-	 * Returns the rate the property has depend on the property's market value
+	/**
+	 * This method finds which rate the tax is calculated with. This depends on the property's estimated market value.
+	 * @param p a property to get the rate of
+	 * @return Returns the rate the property has depend on the property's market value
 	 */
 	private static double getRate(Property p) {
 		double propVal = p.getMarketValue();
@@ -126,10 +124,10 @@ public class TaxCalculator {
 		return rate;
 	}
 	
-	/*
-	 * This method finds which location charge is applied to the property. 
-	 * This depends on where the property is located. 
-	 * Returns the charge of a property 
+	/**
+	 * This method finds which location charge is applied to the property. This depends on where the property is located. 
+	 * @param p property to get the location of
+	 * @return Returns the charge of a property 
 	 */
 	public static double getCharge(Property p) {
 		String propLoc = p.getLocation();
