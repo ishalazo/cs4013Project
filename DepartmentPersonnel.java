@@ -75,17 +75,26 @@ public class DepartmentPersonnel {
     }
 	
 	public String getPropertStats(String eircode) {
+	//Get property tax statistics for a particular area based on the routing key of the
+	//Eircode (e.g. total tax paid, average tax paid, number and percentage of property
+			//taxes paid). 
+		//error with filter, likely implementing it wrong
 		
-		//a lil error with filters here, but mist likely because i didnt do it correctly
 		double totalpaid = Utilities.filter(Utilities.readFromColumn("taxPayments.csv", 5), "Eircode",eircode);
-		
-		double allprop = Utilities.filter(Utilities.readFromColumn("properties.csv", 3), "Eircode",eircode);
-		
 		String RKey = getRoutingKey(eircode);
+                int tax = 5;
+                int allprops = sumRows(properties, tax );
+                System.out.println("The sum of column "+ tax +" is: " + allprops); 
+                return "Eircode: " + eircode + "\nTotal Tax Paid: " + String.format( "%.2f", totalpaid) + "\nAverage Tax Paid: " + String.format( "%.2f", (totalpaid / allprops));
 		
-		return "Eircode: " + eircode + "\nTotal Tax Paid: " + String.format( "%.2f", totalpaid) + "\nAverage Tax Paid: " + String.format( "%.2f", (totalpaid / allprop));
-		   
-		  
-	
+    }
+
+	private int sumRows(ArrayList<String[]> properties, int tax) {
+		int sum = 0;
+        for (String[] line: properties) {
+            sum = sum + Integer.parseInt(line[tax]);
+        }
+        return sum;
 	}
+
 }
