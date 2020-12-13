@@ -60,32 +60,17 @@ public class DepartmentPersonnel {
 	}
 	
 	/*return all unpaid tax payments for a particular owner, on a particular year*/
-	private ArrayList<String> getOverdues(String ownerid){
+	private ArrayList<String> getOverdues(String ownerid, String eircode){
         ArrayList<String[]> properties = Utilities.filter(Utilities.filter(Utilities.readFromFile("taxPayments.csv"),"Year",ownerid), "Eircode", eircode);
         properties = Utilities.filter(properties, "Year", LocalDate.now().getYear());
         ArrayList<String[]> unpaid = Utilities.filter(properties,"Paid",false);
         return Utilities.readFromColumn(unpaid,0);
     }
 	
-	private String getRoutingKey(String eircode){        
+	public String getRoutingKey(String eircode){        
         return eircode.substring(0, 2);
     }
 	
-	public String getPropertStats(String eircode) {
-	//Get property tax statistics for a particular area based on the routing key of the
-	//Eircode (e.g. total tax paid, average tax paid, number and percentage of property
-			//taxes paid). 
-		//error with filter, likely implementing it wrong
-		//maybe a .count(), to count the properties matching the routing key??
-		//double allprops = Utilities.filter(Utilities.readFromColumn("taxPayments.csv", 5), "Eircode",eircode);
-		String RKey = getRoutingKey(eircode);
-                int tax = 5;
-                int totalpaid = sumRows(properties, tax );
-                System.out.println("The sum of column "+ tax +" is: " + allprops); 
-                return "Eircode: " + eircode + "\nTotal Tax Paid: " + String.format( "%.2f", totalpaid) + "\nAverage Tax Paid: " + String.format( "%.2f", (totalpaid / allprops));
-		
-    }
-
 	private int sumRows(ArrayList<String[]> properties, int tax) {
 		int sum = 0;
         for (String[] line: properties) {
@@ -93,5 +78,20 @@ public class DepartmentPersonnel {
         }
         return sum;
 	}
+	
+	public String getPropertStats(String eircode, String ownerid) {
+	   
+		String RKey = getRoutingKey(eircode);
+		
+		if(eircode.length() > 3) {
+			System.out.println("Incorrect input, routing key too long");
+		}
+	
+        ArrayList<String[]> tax = Utilities.filter(tax, RKey, Utilities.readFromColumn("Tax",5));
+        int allprops = sumRows(getOwnerProperties(null), 5 );
+        System.out.println("The sum of column "+ tax +" is: " + allprops); 
+        return "Eircode: " + eircode + "\nTotal Tax Paid: " + String.format( "%.2f", allprops) + "\nAverage Tax Paid: " + String.format( "%.2f", (allprops / tax));
+		
+    }
 
 }
