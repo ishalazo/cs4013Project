@@ -61,6 +61,15 @@ public class Property {
 	public String getOwnerID() {
 		return ownerID;
 	}
+	
+	/**
+	 * @param ownerID the ownerID to set
+	 */
+	public void setOwnerID(String ownerID) {
+		String[] info = {this.ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
+		Utilities.writeToCell("properties.csv", ownerID, info, "Owner_id");
+		this.ownerID = ownerID;
+	}
 
 	/**
 	 * Gets the eircode of the property.
