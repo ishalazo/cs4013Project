@@ -90,9 +90,10 @@ public class Property {
 	}
 
 	public void setprincipalResidence(boolean principalResidence) {
-		String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
-		Utilities.writeToCell("properties.csv", principalResidence, info, "Principal Residence");
+		String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(this.principalResidence)};
 		this.principalResidence = principalResidence;
+		Utilities.writeToCell("properties.csv", principalResidence, info, "Principal Residence");
+		
 //		propVals[5] = Boolean.toString(principalResidence);
 	}
 
