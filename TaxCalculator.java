@@ -23,10 +23,34 @@ public class TaxCalculator {
 						
 	}
 	
+	
+	
+	/**
+	 * @param fixedCost
+	 * @param flatCharge
+	 * @param penalty
+	 * @param propBounds
+	 * @param rateBounds
+	 * @param locCharge
+	 * @param locType
+	 */
+	public static void setCalculator(double fixedCost, double flatCharge, double penalty, double[] propBounds, double[] rateBounds,
+			double[] locCharge, String[] locType) {
+		TaxCalculator.setFixedCost(fixedCost);
+		TaxCalculator.setFlatCharge(flatCharge);
+		TaxCalculator.setLocCharge(locCharge);
+		TaxCalculator.setLocType(locType);
+		TaxCalculator.setPenalty(penalty);
+		TaxCalculator.setPropBounds(propBounds);
+		TaxCalculator.setRateBounds(rateBounds);
+	}
+
+
+
 	public static String viewCalc(){
 		return String.format("€%.2f fixed cost of tax\n"+ 
 							 "€%.2f when property is not principle private residence\n" +
-							 "(%.0f%% penalty\n" +
+							 "%.0f%% penalty\n" +
 							 "Property value boundaries "+ Arrays.toString(propBounds) + 
 							 "\nTax rates " + Arrays.toString(rateBounds) + 
 							 "\nLocation categories " + Arrays.toString(locType) +
@@ -82,6 +106,8 @@ public class TaxCalculator {
 	public static void setLocType(String[] locType) {
 		TaxCalculator.locType = locType;
 	}
+	
+	
 
 	/*
 	 * This method finds which rate the tax is calculated with.
