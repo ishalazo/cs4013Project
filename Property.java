@@ -38,7 +38,14 @@ public class Property {
 		if(writeToCSV) { 
 			String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
 			Utilities.writeToFile("properties.csv", info);
-			Utilities.writeToFile("taxPayments.csv", valsCSV);
+			String[] c = {
+					address,
+					eircode, 
+					ownerID, 
+					Integer.toString(LocalDate.now().getYear()), 
+					Double.toString(TaxCalculator.calculateTax(this)), 
+					Boolean.toString(false)};
+			Utilities.writeToFile("taxPayments.csv", c);
 		}
 	}
 
