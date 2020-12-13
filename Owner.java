@@ -33,11 +33,11 @@ public class Owner {
 	        }
 	    }
 	 
-	 private String getOwnerid(){
+	public String getOwnerid(){
 		 return ownerid;
 	 }
 	
-	private void setPassword(String password){
+	public void setPassword(String password){
 		this.password = password;
 	}
 	
