@@ -1,6 +1,6 @@
-Owner ID,Password
-dept.employee,1234
-1000,money52
-1001,Cavan44
-1002,#waffles
-1003,kerry!
+"ID","Password","Name"
+"dept.employee","1234","Admin"
+"1000","money52","Clodagh Walsh"
+"1001","Cavan44","Tito Etimiri"
+"1002","#waffles","Lakeisha Lazo"
+
