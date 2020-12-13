@@ -2,13 +2,15 @@ import java.util.ArrayList;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+/* This class is a helper class for the GUI in an attempt to modularise the GUI design
+ * This class essentially creates custom gripanes 
+ * 
+ */
 public class Table extends GridPane{
-	
-	private int[] property = {1,2,3,4,5};
+	// Columns of interest for particular situations
 	private int[] owner = {0,3,4,5};
 	private int[] history = {0,1,2,3,4,5};
 	private int[] overdue = {0,1,2,4};
@@ -47,7 +49,6 @@ public class Table extends GridPane{
 				add(new Label(String.valueOf(((Property)properties.get(i)).getMarketValue())),3,i+1);
 			}
 		}
-		//displayDetails(properties,property);
 	}
 	
 	public void displayOwnerHistory(ArrayList<String[]> ownerData) {
@@ -71,7 +72,6 @@ public class Table extends GridPane{
 	
 	public void displayStatement(String display) {
 			add(new Label(display),0,0);
-		
 	}
 	
 	public void clearGrid() {

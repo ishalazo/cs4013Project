@@ -1,6 +1,5 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
 import javafx.application.Application;
@@ -125,7 +124,7 @@ public class GUI extends Application {
 		HBox residentStatus = new HBox(10);
 		residentStatus.getChildren().addAll(primRes,notPrimRes);
 		
-		propertyDetails.add(new Label("Owner id"),0 ,0); // what is have Owners ???
+		propertyDetails.add(new Label("Owner id"),0 ,0); 
 		propertyDetails.add(ownerid,1 ,0);
 		propertyDetails.add(new Label("Address"),0 ,1);
 		propertyDetails.add(address,1 ,1);
@@ -398,7 +397,7 @@ public class GUI extends Application {
 			Optional<ButtonType> decision = alert.showAndWait();
 			if(decision.get() == ButtonType.OK)
 			{
-				Utilities.writeToCell("taxPayments.csv", true,data, "Paid");  // here make a property obj and then use the owner pay method
+				owner.payPropertyTax(data);
 			}
 			
 			primaryStage.setScene(main);
@@ -432,11 +431,6 @@ public class GUI extends Application {
 		getOwnerData.setOnAction(e -> {
 			System.out.println("Getting payment for owner " + searchOwner.getText());
 			ArrayList<String[]> data = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Owner_id", searchOwner.getText());
-			for(String[]s:data)
-			{
-				System.out.println(Arrays.toString(s)); // remove after
-			}
-			
 			ownerData.displayOwnerHistory(data);
 			primaryStage.setScene(ownerHistory);
 		});
@@ -444,11 +438,6 @@ public class GUI extends Application {
 		getPropertyData.setOnAction(e -> {
 			System.out.println("Getting payment for property " + property.getText());
 			ArrayList<String[]> data = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Eircode",property.getText());
-			for(String[]s:data)
-			{
-				System.out.println(Arrays.toString(s)); // remove after
-			}
-			
 			propertyData.displayPropertyHistory(data);
 			primaryStage.setScene(propertyHistory);
 		});
@@ -456,15 +445,7 @@ public class GUI extends Application {
 		getOverdues.setOnAction(e -> {
 			System.out.println("Getting overdues for year " + year.getText());
 			ArrayList<String[]> data = Utilities.filter(Utilities.readFromFile("taxPayments.csv"),"Paid",false);
-			for(String[]s:data)
-			{
-				System.out.println(Arrays.toString(s)); // remove after
-			}
 			data = Utilities.filter(data,"Year",year.getText());
-			for(String[]s:data)
-			{
-				System.out.println(Arrays.toString(s)); // remove after
-			}
 			if(!optionalArea.getText().isEmpty())
 			{
 				System.out.println("Getting overdues for year " + year.getText() + " and optional area" + optionalArea.getText());
@@ -547,7 +528,7 @@ public class GUI extends Application {
 		
 				
 		primaryStage.setTitle("Tax Management System");
-		primaryStage.setScene(home); //home
+		primaryStage.setScene(home); 
 		primaryStage.show();
 	}
 	
@@ -560,9 +541,7 @@ public class GUI extends Application {
 		}
 		return arr;
 	}
-	
-	
-	// perhpas move later 
+		
 	private ArrayList<String[]> getOwnerProperties(String id) { 
 		return Utilities.filter(Utilities.readFromFile("properties.csv"), "Owner_id",id);
 	}
@@ -574,7 +553,6 @@ public class GUI extends Application {
 		return Utilities.readFromColumn(unpaid,0);
 	}
 	
-	// this is a useless method
 	private int taxPayable(String[] details) {
 		return Integer.parseInt(details[4]);
 	}
@@ -585,13 +563,7 @@ public class GUI extends Application {
 		data.remove(0);
 		return data.get(0);
 	}
-	
-	private String[] getPropertyDetails(String address) {
-		ArrayList<String[]> data = Utilities.filter(Utilities.readFromFile("properties.csv"), "Address", address);
-		data.remove(0);
-		return data.get(0);
-	}
-	
+		
 	private String formatPrice(String price) {
 		return price.replace(",", "");
 	}
@@ -601,6 +573,3 @@ public class GUI extends Application {
 	}
 
 }
-
-
-
