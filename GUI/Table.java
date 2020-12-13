@@ -62,6 +62,18 @@ public class Table extends GridPane{
 		displayDetails(overdues,overdue);
 	}
 	
+	public void displayStatement(ArrayList<String> statements) {
+		for(int i=0;i<statements.size();i++)
+		{
+			add(new Label(statements.get(i)),0,i);
+		}
+	}
+	
+	public void displayStatement(String display) {
+			add(new Label(display),0,0);
+		
+	}
+	
 	public void clearGrid() {
 		getChildren().clear();
 	}

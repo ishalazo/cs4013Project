@@ -22,6 +22,7 @@ public class GUI extends Application {
 	DepartmentPersonnel admin;
 	@Override
 	public void start(Stage primaryStage) {
+		
 		Utilities.taxRecalculation();
 		Insets defaultPadding = new Insets(15,15,15,15); 
 				
@@ -30,10 +31,12 @@ public class GUI extends Application {
 		Button ownerBack1 = new Button("Back");
 		Button ownerBack2 = new Button("Back");
 		Button ownerBack3 = new Button("Back");
+		Button ownerBack4 = new Button("Back");
 		Button adminBack1 = new Button("Back");
 		Button adminBack2 = new Button("Back");
 		Button adminBack3 = new Button("Back");
 		Button adminBack4 = new Button("Back");
+		Button adminBack5 = new Button("Back");
 		
 		BorderPane homePane = new BorderPane();
 		GridPane registrationForm = new GridPane();
@@ -46,6 +49,9 @@ public class GUI extends Application {
 		BorderPane ownerHistoryList = new BorderPane();
 		BorderPane propertyHistoryList = new BorderPane();
 		BorderPane overdueList = new BorderPane();
+		BorderPane calculatorDetails = new BorderPane();
+		BorderPane balanceStatement  = new BorderPane();
+		BorderPane stats = new BorderPane();
 				
 		Scene home = new Scene(homePane, 700, 700);
 		Scene registration = new Scene(registrationForm,700,700);
@@ -58,6 +64,9 @@ public class GUI extends Application {
 		Scene ownerHistory = new Scene(ownerHistoryList,700,700);
 		Scene propertyHistory = new Scene(propertyHistoryList,700,700);
 		Scene overDues = new Scene(overdueList,700,700);
+		Scene calculator = new Scene(calculatorDetails,700,700);
+		Scene statement = new Scene(balanceStatement,700,700);
+		Scene statistics = new Scene(stats,700,700);
 		
 		Button newUser = new Button("Click here to register");
 		
@@ -139,11 +148,26 @@ public class GUI extends Application {
 		TextField property = new TextField();
 		TextField searchOwner = new TextField();
 		TextField routingArea = new TextField();
+		TextField fixedCost = new TextField();
+		TextField flatCharge = new TextField();
+		TextField penalty = new TextField();
+		TextField priceBoundaries = new TextField();
+		TextField taxRates = new TextField();
+		TextField locationOptions = new TextField();
+		TextField locationCharges = new TextField();
 		
 		Button getAreaData = new Button("Search");
 		Button getOwnerData = new Button("Search");
 		Button getPropertyData = new Button("Search");
 		Button getOverdues = new Button("Search");
+		Button getCalculator = new Button("View");
+		Button changeFixedCost = new Button("Update");
+		Button changeFlatCharge = new Button("Update");
+		Button changePenalty = new Button("Update");
+		Button changePriceBoundaries = new Button("Update");
+		Button changeTaxRates = new Button("Update");
+		Button changeLocationOptions = new Button("Update");
+		Button changeLocationCharges = new Button("Update");
 		
 		GridPane adminActions = new GridPane();
 		adminActions.add(new Label("Enter a year to view all its outstanding balances"), 0, 0);
@@ -157,10 +181,33 @@ public class GUI extends Application {
 		adminActions.add(new Label("Enter an owner id to view their payment history"), 0, 3);
 		adminActions.add(searchOwner, 1, 3);
 		adminActions.add(getOwnerData, 2, 3);
-		adminActions.add(new Label("Generate stats for an area uing Eircode routing key"), 0, 4);
+		adminActions.add(new Label("Generate stats for an area using Eircode routing key"), 0, 4);
 		adminActions.add(routingArea, 1, 4);
 		adminActions.add(getAreaData, 2, 4);
-	
+		adminActions.add(new Label("View tax calculator details"), 0, 5);
+		adminActions.add(getCalculator, 2, 5);
+		adminActions.add(new Label("Update tax calulator"), 0, 6);
+		adminActions.add(new Label("Modify fixed rate"), 0, 7);
+		adminActions.add(fixedCost, 1, 7);
+		adminActions.add(changeFixedCost, 2, 7);
+		adminActions.add(new Label("Modify flat rate"), 0, 8);
+		adminActions.add(flatCharge, 1, 8);
+		adminActions.add(changeFlatCharge, 2, 8);
+		adminActions.add(new Label("Modify penalty"), 0, 9);
+		adminActions.add(penalty, 1, 9);
+		adminActions.add(changePenalty, 2, 9);
+		adminActions.add(new Label("Modify price boundaries"), 0, 10);
+		adminActions.add(priceBoundaries, 1, 10);
+		adminActions.add(changePriceBoundaries, 2, 10);
+		adminActions.add(new Label("Modify tax rates for existing boundaries"), 0, 11);
+		adminActions.add(taxRates, 1, 11);
+		adminActions.add(changeTaxRates, 2, 11);
+		adminActions.add(new Label("Modify location categories"), 0, 12);
+		adminActions.add(locationOptions, 1, 12);
+		adminActions.add(changeLocationOptions, 2, 12);
+		adminActions.add(new Label("Modify fixed charge for existing location categories"), 0, 13);
+		adminActions.add(locationCharges, 1, 13);
+		adminActions.add(changeLocationCharges, 2, 13);
 	
 		adminActions.setVgap(12);
 		adminActions.setHgap(5);
@@ -171,21 +218,47 @@ public class GUI extends Application {
 		adminMenu.setPadding(defaultPadding);
 		BorderPane.setAlignment(logout2, Pos.TOP_RIGHT);
 		
+		calculatorDetails.setTop(adminBack4);
+		BorderPane.setAlignment(adminBack4, Pos.TOP_RIGHT);
+		calculatorDetails.setPadding(defaultPadding);
+		Table calc = new Table();
+		calculatorDetails.setCenter(calc);
+				
 		Button newProperty = new Button("Register Property");
 		Button viewProperties = new Button("View Properties");
 		Button viewPayments = new Button("Pay tax");
 		Button viewStatement = new Button("View Balancing \nStatement");
+		TextField year1 = new TextField();
+		TextField year2 = new TextField();
 		Button goToUpdate = new Button("Update Property \nDetails");
 		Button pay = new Button("Pay");
 		
+		GridPane rangeForStatement = new GridPane();
+		rangeForStatement.add(new Label("From Year"), 0, 0);
+		rangeForStatement.add(year1, 1, 0);
+		rangeForStatement.add(new Label("To Year"), 0, 1);
+		rangeForStatement.add(year2, 1, 1);
+		rangeForStatement.setHgap(5);
+		rangeForStatement.setVgap(5);
+		
+		HBox balancingStatement = new HBox(10);
+		balancingStatement.getChildren().addAll(viewStatement,rangeForStatement);
+		balancingStatement.setAlignment(Pos.CENTER);
+		
 		VBox ownerActions = new VBox(12);
-		ownerActions.getChildren().addAll(newProperty,viewProperties,viewPayments,viewStatement,goToUpdate);
+		ownerActions.getChildren().addAll(newProperty,viewProperties,viewPayments,goToUpdate,balancingStatement);
 		ownerActions.setPrefWidth(120);
 		ownerActions.setAlignment(Pos.CENTER);
 		ownerMenu.setTop(logout1);
 		ownerMenu.setCenter(ownerActions);
 		ownerMenu.setPadding(defaultPadding);
 		BorderPane.setAlignment(logout1, Pos.TOP_RIGHT);
+		
+		balanceStatement.setTop(ownerBack4);
+		BorderPane.setAlignment(ownerBack4, Pos.TOP_RIGHT);
+		balanceStatement.setPadding(defaultPadding);
+		Table statements = new Table();
+		balanceStatement.setCenter(statements);
 				
 		newProperty.setMinWidth(ownerActions.getPrefWidth());
 		viewProperties.setMinWidth(ownerActions.getPrefWidth());
@@ -214,16 +287,19 @@ public class GUI extends Application {
 		HBox updateResidentStatus = new HBox(10);
 		updateResidentStatus.getChildren().addAll(updatePrimRes,updateNotPrimRes);
 		TextField updateValue = new TextField();
+		TextField updateOwner = new TextField();
 		Button updateDetails = new Button("Update");
 		
 		ComboBox<String> properties = new ComboBox<String>();
 		GridPane updateForm = new GridPane();
 		updateForm.add(properties, 0,0);
-		updateForm.add(new Label("Is this property a principla private residence"), 0, 1);
+		updateForm.add(new Label("Is this property a principal private residence"), 0, 1);
 		updateForm.add(updateResidentStatus,1, 1);
 		updateForm.add(new Label("Enter current estimate market value"),0,2);
-		updateForm.add(updateValue,1,2);		
-		updateForm.add(updateDetails,2,3);
+		updateForm.add(updateValue,1,2);
+		updateForm.add(new Label("Current Owner"),0,3);
+		updateForm.add(updateOwner,1,3);
+		updateForm.add(updateDetails,2,4);
 		
 		updateProperty.setTop(ownerBack3);
 		updateProperty.setCenter(updateForm);
@@ -251,6 +327,12 @@ public class GUI extends Application {
 		overdueList.setCenter(overDueData);
 		BorderPane.setAlignment(adminBack3, Pos.TOP_RIGHT);
 		
+		stats.setTop(adminBack5);
+		stats.setPadding(defaultPadding);
+		Table statsArea = new Table();
+		stats.setCenter(statsArea);
+		BorderPane.setAlignment(adminBack5, Pos.TOP_RIGHT);
+		
 		login.setOnAction(e -> { 
 			System.out.println("Login was pressed");
 			String[] userData = Utilities.filter(Utilities.readFromFile("systemLogins.csv"),"ID",userInput.getText()).get(1);
@@ -265,6 +347,7 @@ public class GUI extends Application {
 				else
 				{
 					System.out.println("Successful login as property owner" + userInput.getText());
+					System.out.println(userInput.getText() + password.getText() + loginName.getText());
 					owner = new Owner(userInput.getText(),password.getText(),loginName.getText(),false);
 					primaryStage.setScene(main);
 				}
@@ -289,7 +372,7 @@ public class GUI extends Application {
 		
 		add.setOnAction(e -> {
 			Property p = new Property(ownerid.getText(),address.getText().replace("\n", " "),eircode.getText(),locations.getValue(),Double.parseDouble(formatPrice(price.getText())),primRes.isSelected(),true);
-			owner.addProperty(p);
+			owner.updateProperties();
 			primaryStage.setScene(main);
 		});
 		
@@ -336,6 +419,11 @@ public class GUI extends Application {
 				{
 					((Property)obj).setMarketValue(Double.parseDouble(updateValue.getText()));
 					((Property)obj).setprincipalResidence(updatePrimRes.isSelected());
+					((Property)obj).setOwnerID(updateOwner.getText());
+					if(!owner.getOwnerid().equals(updateOwner.getText()))
+					{
+						owner.updateProperties();
+					}
 				}
 			}
 			primaryStage.setScene(main);
@@ -383,10 +471,7 @@ public class GUI extends Application {
 				data = Utilities.filter(data, "Eircode",optionalArea.getText());
 			}
 			overDueData.displayOverdues(data);
-			for(String[]s:data)
-			{
-				System.out.println(Arrays.toString(s)); // remove after
-			}
+			
 			primaryStage.setScene(overDues);
 		});
 		
@@ -405,6 +490,27 @@ public class GUI extends Application {
 			primaryStage.setScene(administration);
 		});
 		
+		viewStatement.setOnAction(e -> {
+			ArrayList<String> data = owner.getBalanceStatement(Integer.parseInt(year1.getText()),Integer.parseInt(year2.getText()));
+			statements.displayStatement(data);
+			primaryStage.setScene(statement);
+		});
+		
+		getAreaData.setOnAction(e -> {
+			statsArea.displayStatement(admin.getPropertStats(routingArea.getText()));
+			primaryStage.setScene(statistics);
+		});
+		
+		adminBack4.setOnAction(e -> {
+			calc.clearGrid();
+			primaryStage.setScene(administration);
+		});
+		
+		adminBack5.setOnAction(e -> {
+			statsArea.clearGrid();
+			primaryStage.setScene(administration);
+		});
+		
 		newProperty.setOnAction(e -> primaryStage.setScene(addProperty));
 		
 		logout1.setOnAction(e -> primaryStage.setScene(home));
@@ -420,17 +526,40 @@ public class GUI extends Application {
 		 });
 		 
 		ownerBack3.setOnAction(e -> primaryStage.setScene(main));
+		
+		ownerBack4.setOnAction(e -> {
+			statements.clearGrid();
+			primaryStage.setScene(main);
+		});
+		
+		getCalculator.setOnAction(e -> {
+			calc.displayStatement(TaxCalculator.viewCalc());
+			primaryStage.setScene(calculator);
+		});
+		
+		changeFixedCost.setOnAction(e -> TaxCalculator.setFixedCost(Double.parseDouble(fixedCost.getText())));
+		changeFlatCharge.setOnAction(e -> TaxCalculator.setFlatCharge(Double.parseDouble(flatCharge.getText())));
+		changePenalty.setOnAction(e ->TaxCalculator.setPenalty(Double.parseDouble(penalty.getText())));
+		changePriceBoundaries.setOnAction(e -> TaxCalculator.setPropBounds(convertToArray(priceBoundaries.getText())));
+		changeTaxRates.setOnAction(e -> TaxCalculator.setRateBounds(convertToArray(taxRates.getText())));
+		changeLocationOptions.setOnAction(e -> TaxCalculator.setLocType(locationOptions.getText().split(",")));
+		changeLocationCharges.setOnAction(e -> TaxCalculator.setLocCharge(convertToArray(locationCharges.getText())));
+		
 				
 		primaryStage.setTitle("Tax Management System");
-		primaryStage.setScene(home);
+		primaryStage.setScene(home); //home
 		primaryStage.show();
 	}
-
 	
-	
-	
-	
-	
+	private double[] convertToArray(String s) {
+		String[] temp = s.split(",");
+		double[] arr = new double[temp.length];
+		for(int i=0;i<arr.length;i++)
+		{
+			arr[i] = Double.parseDouble(temp[i]);
+		}
+		return arr;
+	}
 	
 	
 	// perhpas move later 
