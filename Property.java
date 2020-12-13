@@ -8,6 +8,7 @@ public class Property {
 	private String address, eircode, location,ownerID;
 	private double marketValue;
 	private boolean principalResidence;
+	private String[] valsCSV;
 
 	/**Constructs a Property Object
 	 * @param address address of property
@@ -25,18 +26,17 @@ public class Property {
 		this.location = location;
 		this.marketValue = marketValue;
 		this.principalResidence = principalResidence;
-		
+		valsCSV = new String[] {
+				eircode, 
+				ownerID, 
+				Integer.toString(LocalDate.now().getYear()), 
+				Double.toString(TaxCalculator.calculateTax(this)), 
+				Boolean.toString(false)};
 		
 		if(writeToCSV) { 
 			String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
 			Utilities.writeToFile("properties.csv", info);
-			String[] c = {
-					eircode, 
-					ownerID, 
-					Integer.toString(LocalDate.now().getYear()), 
-					Double.toString(TaxCalculator.calculateTax(this)), 
-					Boolean.toString(false)};
-			Utilities.writeToFile("taxPayments.csv", c);
+			Utilities.writeToFile("taxPayments.csv", valsCSV);
 		}
 	}
 
@@ -74,6 +74,8 @@ public class Property {
 
 	public void setMarketValue(double marketValue) {
 		this.marketValue = marketValue;
+		Utilities.writeToCell("properties.csv", marketValue, valsCSV, "Estimated Market Value");
+		valsCSV[4] = Double.toString(marketValue);
 	}
 
 	public boolean isprincipalResidence() {
@@ -82,6 +84,8 @@ public class Property {
 
 	public void setprincipalResidence(boolean principalResidence) {
 		this.principalResidence = principalResidence;
+		Utilities.writeToCell("properties.csv", principalResidence, valsCSV, "Principal Residence");
+		valsCSV[5] = Boolean.toString(principalResidence);
 	}
 
 	public String getAddress() {
