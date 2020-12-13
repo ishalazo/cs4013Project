@@ -1,3 +1,7 @@
+/**
+ * This runs the project on the command line.
+ * @author Lakeisha Lazo 1927797
+ */
 import java.time.LocalDate;
 import java.util.*;
 
@@ -12,7 +16,6 @@ public class CLI {
 	public CLI() {
 		more = true;
 		scan = new Scanner(System.in);
-//		TaxCalculator.setCalculator();
 		users = new ArrayList<Object>();
 	}
 
@@ -145,7 +148,6 @@ public class CLI {
 					double marketValue = scan.nextDouble();
 					System.out.println("Is the property your principal private residence? True/False");
 					Boolean principalResidence = scan.nextBoolean();
-//					currentO.addProperty(new Property(currentO.getOwnerid(), address, eircode, location, marketValue, principalResidence, true));
 					new Property(currentO.getOwnerid(), address, eircode, location, marketValue, principalResidence, true);
 					currentO.updateProperties();
 					System.out.println("Your property have been successfully registered.");
