@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DepartmentPersonnel {
-	
+	// pretty sure there us no need for any of these data fields
 	private ArrayList<Property> property;
 	private String eircode;
 	private String ownerid;
