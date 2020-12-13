@@ -18,9 +18,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
-	//Owner owner;
+	Owner owner;
+	DepartmentPersonnel admin;
 	@Override
 	public void start(Stage primaryStage) {
+		Utilities.taxRecalculation();
 		Insets defaultPadding = new Insets(15,15,15,15); 
 				
 		Button logout1 = new Button("Logout");
@@ -48,7 +50,7 @@ public class GUI extends Application {
 		Scene home = new Scene(homePane, 700, 700);
 		Scene registration = new Scene(registrationForm,700,700);
 		Scene main = new Scene(ownerMenu, 700, 700);
-		Scene admin = new Scene(adminMenu, 700, 700);
+		Scene administration = new Scene(adminMenu, 700, 700);
 		Scene addProperty = new Scene(propertyDetails,700,700);
 		Scene propertyView = new Scene(propertyList,700,700);
 		Scene update = new Scene(updateProperty,700,700);
@@ -65,11 +67,14 @@ public class GUI extends Application {
 		
 		PasswordField password = new PasswordField(); 
 		TextField userInput = new TextField(); 
-		form.add(new Label("ID"), 0, 0);
-		form.add(new Label("Password"), 0, 1);
-		form.add(userInput, 1, 0);
-		form.add(password, 1, 1);
-		form.add(login, 0, 2);
+		TextField loginName = new TextField();
+		form.add(new Label("Full Name"), 0, 0);
+		form.add(loginName, 1, 0);
+		form.add(new Label("ID"), 0, 1);
+		form.add(userInput, 1, 1);
+		form.add(new Label("Password"), 0, 2);
+		form.add(password, 1,2);
+		form.add(login, 0, 3);
 		form.setAlignment(Pos.CENTER);
 		form.setHgap(5);
 		form.setVgap(5);
@@ -128,13 +133,7 @@ public class GUI extends Application {
 		propertyDetails.setVgap(12);
 		propertyDetails.setHgap(12);
 		propertyDetails.setPadding(defaultPadding);
-		
-		add.setOnAction(e -> {
-			new Property(ownerid.getText(),address.getText().replace("\n", " "),eircode.getText(),locations.getValue(),Double.parseDouble(formatPrice(price.getText())),primRes.isSelected());
-			primaryStage.setScene(main);
-		});
-		
-	
+			
 		TextField year = new TextField();
 		TextField optionalArea = new TextField();
 		TextField property = new TextField();
@@ -260,11 +259,13 @@ public class GUI extends Application {
 				if(userInput.getText().equals("dept.employee"))
 				{
 					System.out.println("Successful login as department personnel");
-					primaryStage.setScene(admin);
+					admin = new DepartmentPersonnel();
+					primaryStage.setScene(administration);
 				}
 				else
 				{
 					System.out.println("Successful login as property owner" + userInput.getText());
+					owner = new Owner(userInput.getText(),password.getText(),loginName.getText(),false);
 					primaryStage.setScene(main);
 				}
 			}
@@ -282,14 +283,19 @@ public class GUI extends Application {
 				int ownerID = Integer.parseInt(currentOwners.get(currentOwners.size() -1)) + 1;
 				Alert alert = new Alert(AlertType.INFORMATION,"You have successfully registered \nPlease note your owner id :" + ownerID + "\nYou will now be redirected to log in with your new account",ButtonType.NEXT);
 				alert.showAndWait();
-				String[] newOwner= {Integer.toString(ownerID), password.getText(),name.getText()};
-				Utilities.writeToFile("systemLogins.csv",newOwner);
+				owner = new Owner(Integer.toString(ownerID),password.getText(),name.getText(),true);
 				primaryStage.setScene(home);	
+		});
+		
+		add.setOnAction(e -> {
+			Property p = new Property(ownerid.getText(),address.getText().replace("\n", " "),eircode.getText(),locations.getValue(),Double.parseDouble(formatPrice(price.getText())),primRes.isSelected(),true);
+			owner.addProperty(p);
+			primaryStage.setScene(main);
 		});
 		
 		viewProperties.setOnAction(e -> {
 			System.out.println("Logged in as owner " + userInput.getText());
-			propertyPane.displayPropertyDetails(getOwnerProperties(userInput.getText()));
+			propertyPane.displayPropertyDetails(owner.getProperties());
 			primaryStage.setScene(propertyView);
 			});
 				
@@ -309,7 +315,7 @@ public class GUI extends Application {
 			Optional<ButtonType> decision = alert.showAndWait();
 			if(decision.get() == ButtonType.OK)
 			{
-				Utilities.writeToCell("taxPayments.csv", true,data, "Paid");
+				Utilities.writeToCell("taxPayments.csv", true,data, "Paid");  // here make a property obj and then use the owner pay method
 			}
 			
 			primaryStage.setScene(main);
@@ -324,10 +330,14 @@ public class GUI extends Application {
 		});
 		
 		updateDetails.setOnAction(e -> {
-			String[] row = getPropertyDetails(properties.getValue());
-			Utilities.writeToCell("properties.csv", updatePrimRes.isSelected(), row, "Principal Residence");
-			row = getPropertyDetails(properties.getValue());
-			Utilities.writeToCell("properties.csv", formatPrice(updateValue.getText()), row, "Estimated Market Value");
+			for(Object obj:owner.getProperties())
+			{
+				if(obj instanceof Property && ((Property)obj).getAddress().equals(properties.getValue()))
+				{
+					((Property)obj).setMarketValue(Double.parseDouble(updateValue.getText()));
+					((Property)obj).setprincipalResidence(updatePrimRes.isSelected());
+				}
+			}
 			primaryStage.setScene(main);
 		});
 		
@@ -382,17 +392,17 @@ public class GUI extends Application {
 		
 		adminBack1.setOnAction(e -> {
 			ownerData.clearGrid();
-			primaryStage.setScene(admin);
+			primaryStage.setScene(administration);
 		});
 		
 		adminBack2.setOnAction(e -> {
 			propertyData.clearGrid();
-			primaryStage.setScene(admin);
+			primaryStage.setScene(administration);
 		});
 		
 		adminBack3.setOnAction(e -> {
 			overDueData.clearGrid();
-			primaryStage.setScene(admin);
+			primaryStage.setScene(administration);
 		});
 		
 		newProperty.setOnAction(e -> primaryStage.setScene(addProperty));

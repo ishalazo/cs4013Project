@@ -8,10 +8,10 @@ import javafx.scene.layout.GridPane;
 
 public class Table extends GridPane{
 	
-	int[] property = {1,2,3,4,5};
-	int[] owner = {0,3,4,5};
-	int[] history = {0,1,2,3,4,5};
-	int[] overdue = {0,1,2,4};
+	private int[] property = {1,2,3,4,5};
+	private int[] owner = {0,3,4,5};
+	private int[] history = {0,1,2,3,4,5};
+	private int[] overdue = {0,1,2,4};
 	
 	public Table() {
 		setVgap(12);
@@ -31,8 +31,23 @@ public class Table extends GridPane{
 		}
 	}
 	
-	public void displayPropertyDetails(ArrayList<String[]> properties) {
-		displayDetails(properties,property);
+	public void displayPropertyDetails(ArrayList<Object> properties) {
+		add(new Label("Address"),0,0);
+		add(new Label("Eircode"),1,0);
+		add(new Label("Location"),2,0);
+		add(new Label("Market Value"),3,0);
+		
+		for(int i=0;i<properties.size();i++)
+		{
+			if(properties.get(i) instanceof Property)
+			{
+				add(new Label(((Property)properties.get(i)).getAddress()),0,i+1);
+				add(new Label(((Property)properties.get(i)).getEircode()),1,i+1);
+				add(new Label(((Property)properties.get(i)).getLocation()),2,i+1);
+				add(new Label(String.valueOf(((Property)properties.get(i)).getMarketValue())),3,i+1);
+			}
+		}
+		//displayDetails(properties,property);
 	}
 	
 	public void displayOwnerHistory(ArrayList<String[]> ownerData) {
