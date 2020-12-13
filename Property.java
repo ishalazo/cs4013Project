@@ -27,6 +27,7 @@ public class Property {
 		this.marketValue = marketValue;
 		this.principalResidence = principalResidence;
 		valsCSV = new String[] {
+				address,
 				eircode, 
 				ownerID, 
 				Integer.toString(LocalDate.now().getYear()), 
