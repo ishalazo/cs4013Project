@@ -28,8 +28,10 @@ public class Property {
 		this.location = location;
 		this.marketValue = marketValue;
 		this.principalResidence = principalResidence;
-
-		if(writeToCSV) { 
+		
+		ArrayList<String[]> payments = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Eircode", eircode);
+		payments.remove(0);
+		if(writeToCSV || payments.size() == 0) { 
 			String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
 			Utilities.writeToFile("properties.csv", info);
 			tax = TaxCalculator.calculateTax(this);
@@ -41,11 +43,9 @@ public class Property {
 					Double.toString(tax), 
 					Boolean.toString(false)};
 			Utilities.writeToFile("taxPayments.csv", c);
+		}else {
+			tax = Double.parseDouble(payments.get(payments.size()-1)[4]);
 		}
-		
-		ArrayList<String[]> payments = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Eircode", eircode);
-		payments.remove(0);
-		tax = Double.parseDouble(payments.get(payments.size()-1)[4]);
 	}
 
 	/**
