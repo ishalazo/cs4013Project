@@ -4,32 +4,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DepartmentPersonnel {
-	// pretty sure there us no need for any of these data fields
 	private ArrayList<Property> property;
-	private String eircode;
-	private String ownerid;
-	private ArrayList<String[]> properties;
-	
 	
 	/** DepartmentPersonnel
 	 * @author Tito Etimiri 19248547
 	 */
-	/**
-	 * @param eircode
-	 * @param ownerid
-	 * 
-	 */
 	
 	public DepartmentPersonnel() {
 	}
-	
-	//some of the methods are a lil redundant now but i don't want to delete anything yet
-	
+		
 	private ArrayList<String[]> getOwnerProperties(String ownerid) { 
         return Utilities.filter(Utilities.readFromFile("properties.csv"), "Owner_id",ownerid);
     }
 	
-	//seems? kinda? idk, not gonna delete ~for review ig~
 	/*return payments made by a particular owner*/
 	public String getOwnerPayments(String ownerid) {
 		property = new ArrayList<Property>();
@@ -44,7 +31,6 @@ public class DepartmentPersonnel {
 		return "Incorrect id";
 	}
 	
-	//seems? kinda? idk, not gonna delete ~for review ig~
 	/*return payments made on a particular property*/
 	public String getPropertyPayments(String eircode) {
 		property = new ArrayList<Property>();
@@ -79,6 +65,7 @@ public class DepartmentPersonnel {
         return sum;
 	}
 	
+	/*returns tax statistics of properties in a particular area*/
 	public String getPropertStats(String eircode, String ownerid) {
 	   
 		String RKey = getRoutingKey(eircode);
