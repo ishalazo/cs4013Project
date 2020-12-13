@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Owner {
@@ -42,7 +43,7 @@ public class Owner {
 		return ownername;
 	}
 	
-	//might be a little redundant tho
+	//this is needed
 	/* Owner can add properties */
 	public void addProperty(Object property) {
 		if(property instanceof Property)
@@ -58,9 +59,18 @@ public class Owner {
 	}
 
 	/*returns a list of transactions for a particular year*/
-	public void getBalanceStatement(int year){
-		Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Year", year);
-    }
+	public void getBalanceStatement(int firstYr, int secondYr){
+		for(int i=0;i<properties.size();i++)
+		{
+			if(properties.get(i) instanceof Property)
+			{
+				System.out.println(((Property)properties.get(i)).propBalStatement(firstYr, secondYr));
+			}
+		}
+		
+		//Utilities.readFromFile("taxPayments.csv");
+		//Utilities.readFromColumn("taxPayments.csv", year);
+	}
 
 	/*pays outstanding property tax*/
 	public void payPropertyTax(String[] property){
