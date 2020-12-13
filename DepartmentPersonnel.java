@@ -57,27 +57,29 @@ public class DepartmentPersonnel {
         return eircode.substring(0, 2);
     }
 	
-	private int sumRows(ArrayList<String[]> properties, int tax) {
-		int sum = 0;
-        for (String[] line: properties) {
-            sum = sum + Integer.parseInt(line[tax]);
-        }
-        return sum;
+	private double sumRows(ArrayList<String[]> properties, int tax) {
+		double sum = 0;
+		for (int i = 1; i < properties.size(); i++) {
+			sum = sum + Double.parseDouble(properties.get(i)[tax]);
+		}
+		return sum;
 	}
 	
 	/*returns tax statistics of properties in a particular area*/
 	public String getPropertStats(String eircode, String ownerid) {
 	   
-		String RKey = getRoutingKey(eircode);
+		
 		
 		if(eircode.length() > 3) {
 			System.out.println("Incorrect input, routing key too long");
 		}
-	
-        ArrayList<String[]> tax = Utilities.filter(tax, RKey, Utilities.readFromColumn("Tax",5));
-        int allprops = sumRows(getOwnerProperties(null), 5 );
-        System.out.println("The sum of column "+ tax +" is: " + allprops); 
-        return "Eircode: " + eircode + "\nTotal Tax Paid: " + String.format( "%.2f", allprops) + "\nAverage Tax Paid: " + String.format( "%.2f", (allprops / tax));
+		ArrayList<String[]> properties = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Eircode",
+				eircode);
+		double totalpaid = sumRows(properties, 4);
+
+		return "Eircode: " + eircode + "\nTotal Tax Paid: " + String.format("%.2f", totalpaid) + "\nAverage Tax Paid: "
+				+ String.format("%.2f", (totalpaid / properties.size()));
+	            
 		
     }
 
