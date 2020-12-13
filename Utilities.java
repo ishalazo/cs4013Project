@@ -73,7 +73,7 @@ public class Utilities {
 		
 		try {
 			CSVWriter writer = new CSVWriter(new FileWriter(file));
-			writer.writeAll(csvFile);
+			writer.writeAll(csvFile,false);
 			writer.close();
 		}
 		catch(Exception e) {

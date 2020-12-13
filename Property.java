@@ -8,6 +8,7 @@ public class Property {
 	private String address, eircode, location,ownerID;
 	private double marketValue, tax;
 	private boolean principalResidence;
+	String[] info;
 //	private String[] propVals;
 
 	/**Constructs a Property Object
@@ -26,14 +27,14 @@ public class Property {
 		this.location = location;
 		this.marketValue = marketValue;
 		this.principalResidence = principalResidence;
-		/*propVals = new String[] {
-				ownerID, 
-				address,
-				eircode, 
-				location,
-				Double.toString(marketValue),
-				Boolean.toString(principalResidence)
-		};*/
+//		info = new String[] {
+//				ownerID, 
+//				address,
+//				eircode, 
+//				location,
+//				Double.toString(marketValue),
+//				Boolean.toString(principalResidence)
+//		};
 		
 		ArrayList<String[]> payments = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Eircode", eircode);
 		payments.remove(0);
@@ -66,9 +67,9 @@ public class Property {
 	 * @param ownerID the ownerID to set
 	 */
 	public void setOwnerID(String ownerID) {
-		String[] info = {this.ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(principalResidence)};
-		Utilities.writeToCell("properties.csv", ownerID, info, "Owner_id");
+		info = Utilities.filter(Utilities.readFromFile("properties.csv"), "Eircode", eircode).get(1);
 		this.ownerID = ownerID;
+		Utilities.writeToCell("properties.csv", ownerID, info, "Owner_id");
 	}
 
 	/**
@@ -88,10 +89,9 @@ public class Property {
 	}
 
 	public void setMarketValue(double marketValue) {
-		String[] info = {ownerID, address, eircode, location, Double.toString(this.marketValue), Boolean.toString(principalResidence)};
+		info = Utilities.filter(Utilities.readFromFile("properties.csv"), "Eircode", eircode).get(1);
 		Utilities.writeToCell("properties.csv", marketValue, info, "Estimated Market Value");
 		this.marketValue = marketValue;
-//		propVals[4] = Double.toString(marketValue);
 	}
 
 	public boolean isprincipalResidence() {
@@ -99,11 +99,9 @@ public class Property {
 	}
 
 	public void setprincipalResidence(boolean principalResidence) {
-		String[] info = {ownerID, address, eircode, location, Double.toString(marketValue), Boolean.toString(this.principalResidence)};
+		info = Utilities.filter(Utilities.readFromFile("properties.csv"), "Eircode", eircode).get(1);
 		this.principalResidence = principalResidence;
 		Utilities.writeToCell("properties.csv", principalResidence, info, "Principal Residence");
-		
-//		propVals[5] = Boolean.toString(principalResidence);
 	}
 
 	public String getAddress() {
