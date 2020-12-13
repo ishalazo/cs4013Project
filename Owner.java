@@ -59,9 +59,8 @@ public class Owner {
 
 	/*returns a list of transactions for a particular year*/
 	public void getBalanceStatement(int year){
-		Utilities.readFromFile("taxPayments.csv");
-		//Utilities.readFromColumn("taxPayments.csv", year);
-	}
+		Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Year", year);
+    }
 
 	/*pays outstanding property tax*/
 	public void payPropertyTax(String[] property){
