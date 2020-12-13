@@ -79,11 +79,11 @@ public class DepartmentPersonnel {
 	//Eircode (e.g. total tax paid, average tax paid, number and percentage of property
 			//taxes paid). 
 		//error with filter, likely implementing it wrong
-		
-		double totalpaid = Utilities.filter(Utilities.readFromColumn("taxPayments.csv", 5), "Eircode",eircode);
+		//maybe a .count(), to count the properties matching the routing key??
+		//double allprops = Utilities.filter(Utilities.readFromColumn("taxPayments.csv", 5), "Eircode",eircode);
 		String RKey = getRoutingKey(eircode);
                 int tax = 5;
-                int allprops = sumRows(properties, tax );
+                int totalpaid = sumRows(properties, tax );
                 System.out.println("The sum of column "+ tax +" is: " + allprops); 
                 return "Eircode: " + eircode + "\nTotal Tax Paid: " + String.format( "%.2f", totalpaid) + "\nAverage Tax Paid: " + String.format( "%.2f", (totalpaid / allprops));
 		
