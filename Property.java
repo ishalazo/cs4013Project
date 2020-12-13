@@ -156,7 +156,7 @@ public class Property {
 			String[] p = propPayments.get(i);
 			int propYr = Integer.parseInt(p[3]);
 			if(firstYr <= propYr && propYr <= secondYr) {
-				output += String.format("%s Tax: €%.2f",p[3], p[4]);
+				output += String.format("%s Tax: €%.2f",p[3],Double.parseDouble(p[4]));
 				if(Boolean.parseBoolean(p[5])) {
 					output += ", Paid\n";
 				} else if (Integer.parseInt(p[3]) == LocalDate.now().getYear() && !Boolean.parseBoolean(p[5])) {
