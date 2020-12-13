@@ -43,15 +43,9 @@ public class Owner {
 		return ownername;
 	}
 	
-	//this is needed
-	/* Owner can add properties */
-	public void addProperty(Object property) {
-		if(property instanceof Property)
-		{
-			properties.add(property);
-		}
-
-	}   
+	public void updateProperties() {
+		properties = Utilities.fileToArrayList("properties.csv", "Owner_id", ownerid);
+	}
 
 	/*returns a list of properties*/
 	public ArrayList<Object> getProperties() {
