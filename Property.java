@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Property {
 	private String address, eircode, location,ownerID;
-	private double marketValue;
+	private double marketValue, tax;
 	private boolean principalResidence;
 	private String[] valsCSV;
 
@@ -100,7 +100,14 @@ public class Property {
 	public String getAddress() {
 		return address;
 	}
+	
 
+	/**
+	 * @return the tax
+	 */
+	public double getTax() {
+		return tax;
+	}
 
 	public void calculateCurrentTax() {
 		ArrayList<String[]> payments = Utilities.filter(Utilities.readFromFile("taxPayments.csv"), "Eircode", eircode);
@@ -108,21 +115,23 @@ public class Property {
 		boolean isPaid = Boolean.parseBoolean(payments.get(payments.size()-1)[5]);
 		if(!isPaid) {
 			double prev = Double.parseDouble(payments.get(payments.size()-1)[3]);
+			tax = TaxCalculator.compoundTax(this,prev);
 			String[] content = {
 					address,
 					eircode, 
 					ownerID, 
 					Integer.toString(LocalDate.now().getYear()), 
-					Double.toString(TaxCalculator.compoundTax(this,prev)), 
+					Double.toString(tax), 
 					Boolean.toString(false)};
 			Utilities.writeToFile("taxPayments.csv", content);
 		} else {
+			tax = TaxCalculator.calculateTax(this);
 			String[] c = {
 					address,
 					eircode, 
 					ownerID, 
 					Integer.toString(LocalDate.now().getYear()), 
-					Double.toString(TaxCalculator.calculateTax(this)), 
+					Double.toString(tax), 
 					Boolean.toString(false)};
 			Utilities.writeToFile("taxPayments.csv", c);
 		}
